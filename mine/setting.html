@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+			<link rel="stylesheet" href="../css/index.css">
+		<style>
+			html{
+				font-size: 10px;
+			}
+	  .bg{
+			background:#1C86EE;
+			color: #fff;
+		}
+	#ui_box{
+    		position: relative;
+    		padding: 10px 10px;
+    		height: 85px;
+    	}
+	.user_avatar{
+		float: left;
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
+		background: url(images/people.png) no-repeat center;
+		background-size: 100%;
+	}
+	.ui_content{
+		float: left;
+		margin-left: 10px;
+	}
+	.ui_content h4, .ui_content h5{
+		color: #fff;
+		line-height: 25px;
+	}
+	.ui_content.mui-navigate-right:after, .mui-push-right:after{
+		color: #fff;
+	}
+	.my-icon.mui-table-view-cell:after, .my-icon{
+		background: #fff;
+	}
+	.my-icon img{
+		width: 30px;
+		height: 30px;
+	}
+	.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+		padding:0;
+		border-bottom: none;
+	}
+	.mui-grid-view.mui-grid-9 .mui-table-view-cell>a:not(.mui-btn){
+		padding: 6px 0;
+	}
+	.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body{
+		font-size: 10px;
+		margin-top: 3px;
+	}
+	.table-icon-cell{
+		padding-left: 30px;
+		background-position: 10px center;
+		background-repeat: no-repeat;
+		background-size: 25px;
+		font-size: 1.5rem;
+		line-height: 25px;
+	}
+	.table-icon-cell:active{
+		background-color: #eee;
+	}
+	.mui-table-view-cell.table-icon-cell>a.mui-active{
+		background-color: rgba(0,0,0,0);
+	}
+	.mui-table-view-cell.table-icon-cell:hover{
+		background-color: #efefef;
+	}
+	.mineTop{
+    margin: 0;
+    padding: 1rem 0;
+    position: relative;
+    background: url("../images/bg.png");
+    /*background: red;*/
+    height: 12rem;
+    background-size: 100% 100%;
+    width: 100%;
+    /*padding: 2rem;*/
+}
+.mineTop img{
+    width: 9rem;
+    border-radius: 50%;
+}
+.mineTop .col-60 h4{
+    color: white;
+    margin-top: 1.2rem;
+    font-weight: 400;
+}
+.mine i{
+    color: #00a0ff;
+}
+p.h4{
+	color: white;
+	font-weight: 500;
+    margin: .7rem 0;
+	
+}
+.col.col-60{
+		padding: .5rem 0;
+}
+
+		</style>
+	</head>
+	<body>
+		<div class="mui-content" id='content' style="padding-bottom: 10px;">
+		    <div class="rowf mineTop" >
+	            <div class="col col-40 rowf M ac">
+	                <img src="../images/user.png">
+	            </div>
+	            <div class="col col-60 ">
+	                <p class="h4">姓名：{{name}}</p>
+	                <p class="h4">工号：{{Code}}</p>
+	                <p class="h4">科室：{{Room == 'null'?'':Room}}</p>
+	            </div>
+	        </div>
+			<ul class="mui-table-view" style="margin-top: 10px;">
+				<li id="set_feedback" class="mui-table-view-cell table-icon-cell" style="background-image: url(../images/fkui.png);">
+					<a class="mui-navigate-right">
+						我要反馈
+					</a>
+				</li>
+				<li id="set_self" class="mui-table-view-cell table-icon-cell" style="background-image: url(../images/sz.png);">
+					<a class="mui-navigate-right">
+						个人设置
+					</a>
+				</li>
+				<li id="set_about" class="mui-table-view-cell table-icon-cell" style="background-image: url(../images/wm.png);">
+					<a class="mui-navigate-right">
+						关于我们
+					</a>
+				</li>
+				<li id="update" class="mui-table-view-cell table-icon-cell" style="background-image: url(../images/genx.png);">
+					<a class="mui-navigate-right">
+						检查更新
+					</a>
+				</li>
+			</ul>
+		</div>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/vue.js"></script>
+	<script src="../js/jquery-3.0.0.min.js"></script>
+	<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+
+			mui.init();
+			var vm = new Vue({
+		               	el:'#content',
+		                data:{
+		                	name:'',
+		                	Code:'',
+		                	Room:'',
+		                	
+		                },
+		                methods:{
+		                	setting:function(){
+        						vm.name = localStorage.getItem('loginName');
+								vm.Code = localStorage.getItem('staffCode');
+								vm.Room = localStorage.getItem('starffRoom');
+		                	}
+		                }
+
+		    });
+			vm.setting(); 
+//	        setTimeout(function(){
+//	        	vm.setting();
+//	        },1000);
+//			setTimeout(function(){
+//	        	vm.setting();
+//	        },15000);
+//			console.log(vm.name,vm.Code,vm.Room);
+			document.getElementById('set_self').addEventListener('tap', function() {
+			     mui.openWindow({
+			         url: 'set_self.html', 
+			         id:'set_self',
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+			document.getElementById('set_feedback').addEventListener('tap', function() {
+			     mui.openWindow({
+			         url: 'set_feedback.html', 
+			         id:'set_feedback',
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+			document.getElementById('set_about').addEventListener('tap', function() {
+			     mui.openWindow({
+			         url: 'set_about.html', 
+			         id:'set_about',
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+
+			document.getElementById('update').addEventListener('tap', function() {
+			     mui.openWindow({
+			         url: 'set_update.html', 
+			         id:'set_update',
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+			
+//切换字体大小						
+			switch(localStorage.getItem('zt')){
+				case '小':
+				$('.table-icon-cell').css('fontSize','15px')
+				break;						
+				case '中':
+				$('.table-icon-cell').css('fontSize','16px')
+				break;						
+				default:
+				$('.table-icon-cell').css('fontSize','17px')
+				break;					
+			};
+
+			//退出事件
+			var first=null;
+			mui.back = function() {
+				//首次按键，提示‘再按一次退出应用’
+				if (!first) {
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if (new Date().getTime() - first < 1000) {
+						plus.runtime.quit();
+					}
+				}
+			};
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>更新</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+<style>
+	html{
+		font-size: 10px;
+	}
+.mui-bar-nav{
+        background-color: #1F79CE;}
+.mui-title{color:#fff}
+    a{color:#fff;}
+.mui-bar-tab .mui-tab-item.mui-active {
+	color: #FFFFFF;background-color: #00B2EE;}
+.aboutus{ 
+	/*padding: 15px;*/ 
+background-color: #fff;}
+.mine_3top{
+    padding: 1rem 0;
+}
+.mine_3top img {
+	width: 75%;
+    margin: 2rem 0;
+}
+.mine_3top p.h4{
+    margin: 1rem 0;
+    font-size: 2rem;
+    color: #333;
+}
+.mine_3top .button{
+    padding: 0 5rem;
+    margin-top: 2rem;
+    border-radius: 3rem;
+}
+.button-positive{
+	font-size:2.2rem;
+	color: #fff;
+	margin-bottom: 2rem;
+}
+.button.button-positive {
+    border-color: transparent;
+    background-color: #387ef5;
+    color: #fff;
+}
+.white{
+	background-color: white;
+}
+.button {
+    border-color: transparent;
+    background-color: #f8f8f8;
+    color: #444;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 12px;
+    min-width: 52px;
+    min-height: 47px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 42px;
+    cursor: pointer;
+}
+.button-positive {
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 2rem;
+}
+		</style>
+	</head>
+
+	<body>
+		<header  id="header" class="mui-bar mui-bar-nav">
+		      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">检查更新</h1>
+		</header>
+		<div class="mui-content" id='content'>
+			<div class="rowf M ac tc mine_3top white">
+	            <div>
+	                <img src="../images/fresh.png" alt="">
+	                <p class="h4">当前版本:{{old_version}}</p>
+	                <p class="h4">最新版本:{{new_version}}</p>
+	                <div>
+	                    <button v-if="isUpdate" v-on:click="update()" id="updateBtn" class="button button-positive">更新</button>
+	                    <button v-if="!isUpdate" style="padding: 0 2rem;" class="button button-positive">已是最新版本!</button>
+	                </div>
+	            </div>
+	
+	        </div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+	    <script type="text/javascript">	     
+	    	mui.init();			
+	        mui.plusReady(function(){
+	            var self = plus.webview.currentWebview();
+	                
+	        });	
+
+	              var vm = new Vue({
+		               el:'#content',
+		                data:{
+		                	old_version:'1.0',
+		                	new_version:'',
+		                	isUpdate:true
+	                	},
+		                methods:{
+		               
+		                	init1:function(){
+		                		that = this;
+		                		mui.post(url_all+'/cloud/shyf/api/np/v1/version/queryList.smvc?status=1',{	
+								        tenantId:tenantId,	
+									},function(data){
+										console.log(data);
+										that.new_version= data.data.versionNumber;
+										console.log(that.new_version)
+										if (that.new_version > that.old_version) {
+											that.isUpdate=true;
+										} else if(that.new_version == that.old_version){
+											that.isUpdate=false;
+										}else{
+											that.isUpdate=false;
+										}
+																					
+									},'json'
+								);
+								
+
+		                	},
+		                	update:function () {
+		                		console.log(that.new_version)
+		                		var txt=document.getElementById("updateBtn").innerHTML='正在下载...';
+		                		  var ua = navigator.userAgent.toLowerCase();
+		           				 if(/iphone|ipad|ipod/.test(ua)) {
+		           				 	var url='itms-apps://itunes.apple.com/cn/app/hello-h5+/id682211190?l=zh&mt=8';// HelloH5应用在appstore的地址
+										plus.runtime.openURL(url);
+		           				 }else if(/android/.test(ua)){
+		           				 	var url=url_all+"/cloud/shyf/api/np/v1/download/shyf.apk"; // 下载文件地址
+									var dtask = plus.downloader.createDownload( url, {}, function ( d, status ) {
+									    if ( status == 200 ) { // 下载成功
+									    	alert( "XIA: " + status ); 
+									        var path = d.filename;
+									        console.log(d.filename);
+									        plus.runtime.install(path);  // 安装下载的apk文件
+									    } else {//下载失败
+									        alert( "Download failed: " + status ); 
+									    }  
+									});
+									dtask.start(); 
+		           				 }else{
+		           				 	return ;
+		           				 }
+		                	}
+		              	
+		                }
+		        });
+		        vm.init1();
+
+	    </script>
+	</body>
+
+</html>

@@ -1,0 +1,442 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/index.css" rel="stylesheet" />
+		<style type="text/css">
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: 30px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 110px;		/*距离顶部的位置*/
+			}
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-top-tips .mui-pull-loading {
+				/*-webkit-backface-visibility: hidden;
+				-webkit-transition-duration: 400ms;
+				transition-duration: 400ms;*/
+				
+				margin: 0;
+			}
+			.mui-pull-top-wrapper .mui-icon,
+			.mui-pull-top-wrapper .mui-spinner {
+				margin-top: 7px;/*NO*/
+			}
+			.mui-pull-top-wrapper .mui-icon.mui-reverse {
+				/*-webkit-transform: rotate(180deg) translateZ(0);*/
+			}
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			.mui-slider-indicator.mui-segmented-control {
+				background-color: #efeff4;
+			}
+			
+			.mui-bar-nav {
+				background-color: #1F79CE;
+			}
+			
+			.mui-title {
+				color: #fff
+			}
+			
+			a {
+				color: #fff;
+			}
+			.third{
+				display: none;
+			}
+			[v-cloak] { display:none; }
+			#change{
+				position: relative;
+			}
+			#line{
+				position: absolute;
+				top: 48px;
+				/*width: 100%;*/
+				height: 1px;
+				z-index: 999;
+				background: #CCCCCC;
+			}
+			.mui-scroll-wrapper .mui-table-view,.today{
+				margin-top: 43px;
+			}
+			.mui-btn.mui-pull-right{
+				top: 5px;
+			}
+
+		</style>
+				<script type="text/javascript" src="../js/vue.js" ></script>
+	</head>
+
+	<body id='content' >
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">报警记录</h1>
+			<input type="text" class="input_hidden" v-model="input_hidden"  />
+			<button class="mui-btn mui-btn-green mui-pull-right">筛选</button>
+		</header>
+		<div id='change' style="width: 100%;height: 50px;border-bottom: 1px solid #EEEEEE;margin-top: 54px;text-align: center;line-height: 50px;background-color: #FFFFFF;">
+			<div style="width: 50%;height: 100%;float: left;background-color: #007aff;color: #FFFFFF;"  id="today">今日记录</div>
+			<div style="width: 50%;height: 100%;float: left;"  id="history">历史记录</div>
+			<div id="line"></div>
+
+		</div>
+		<ul class="mui-table-view" style="z-index: 999;">
+        	<li class="rowf  ar ac  mui-table-view-cell">
+				<span>时间</span>
+				<span>类型</span>
+				<span>编号</span>
+			</li>
+		</ul>
+		<!--  历史数据展示 -->
+		<div class="mui-scroll-wrapper" style="margin-top: 105px;display: none;z-index: 0;"  id="historyContent" >
+			<div class="mui-scroll"   id="scroll">
+				<!--这里展示具体的数据-->
+                <ul class="mui-table-view ">
+                	<li class="rowf be ac  mui-table-view-cell" v-for="num in historyData" v-show='historyData'>
+                        <span class="rowf ac be">
+                            <img :src="'../images/a'+num.status+'.png'" alt="">
+                            {{num.createAlarmTime.split(' ')[1]}}
+                        </span>
+                        <span v-text='num.alarmTypeName'></span>
+                        <span v-text='num.storePackCode.substring(10)'></span>
+                    	<span class="third" style="">{{num.storePackCode}}</span>
+                	</li>
+    			</ul>
+			</div>
+		</div>
+		
+		<!-- 今日数据展示 -->
+		<div style="width: 100%;position: absolute;top: 105px;bottom: 0px;overflow-y: scroll;"  id="todayContent" v-cloak>
+			<!-- 这里展示具体的数据 -->
+			<ul class="mui-table-view today" >
+            	<li class="rowf be ac  mui-table-view-cell" v-for="num in todayData" >
+                    <span class="rowf ac be">
+                        <img :src="'../images/a'+num.status+'.png'" alt="">
+                        {{num.createAlarmTime.split(' ')[1]}}
+                    </span>
+                    <span>{{num.alarmTypeName}}</span>
+                    <span >{{num.storePackCode.substring(10)}}</span>
+                    <span class="third" style="">{{num.storePackCode}}</span>
+            	</li>
+			</ul>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/index.js" ></script>
+		<script type="text/javascript" src="../js/mui.pullToRefresh.js" ></script>
+		<script type="text/javascript" src="../js/mui.pullToRefresh.material.js" ></script>
+
+		<script type="text/javascript">
+			
+			var todayTag=true;
+			var historyTag=true;
+			//选项卡切换
+			document.getElementById("today").addEventListener('tap',function(){
+				if(!todayTag){
+					return;
+				}
+				document.getElementById("today").style.color="#FFFFFF";
+				document.getElementById("today").style.fontWeight=700;
+				document.getElementById("today").style.backgroundColor="#007AFF";
+				
+				document.getElementById("history").style.color="#666666";
+				document.getElementById("history").style.fontWeight=300;
+				document.getElementById("history").style.backgroundColor="#FFFFFF";
+				
+				document.getElementById("todayContent").style.display='block';
+				document.getElementById("historyContent").style.display='none';
+				
+			});
+			
+			document.getElementById("history").addEventListener('tap',function(){
+				if(!historyTag){
+					return;
+				}
+				document.getElementById("today").style.color="#666666";
+				document.getElementById("today").style.fontWeight=300;
+				document.getElementById("today").style.backgroundColor="#FFFFFF";
+
+				
+				document.getElementById("history").style.color="#FFFFFF";
+				document.getElementById("history").style.fontWeight=700;
+				document.getElementById("history").style.backgroundColor="#007AFF";
+				
+				document.getElementById("todayContent").style.display='none';
+				document.getElementById("historyContent").style.display='block';
+			});
+			mui.init();
+			var vm="";
+			mui.plusReady(function(){
+				var ws=plus.webview.currentWebview();
+				ws.addEventListener('maskClick', function(){
+					if(plus.webview.getWebviewById('Pop_box')!=""&&plus.webview.getWebviewById('Pop_box')!=null){
+						plus.webview.getWebviewById('Pop_box').close();
+					}
+					
+					ws.setStyle({mask:'none'});
+				},false);
+				var deceleration = mui.os.ios?0.003:0.0009;
+//				mui('.mui-scroll-wrapper').scroll({
+//					bounce: false,
+//					indicators: true, 
+//					deceleration:deceleration
+//				});
+				mui('#scroll').pullToRefresh({
+					down:{
+						callback: function(){
+							var self = this;
+							todayTag=false;
+							historyTag=false;
+							downfunc(self);
+						}
+					},
+					up: {
+						callback: function(){
+							var self = this;
+							upfunc(self);
+						}
+					}
+				});
+				
+				vm=new Vue({
+					el:"#content",
+					data:{
+						todayData:[],
+						historyData:[],
+						page:1,
+						input_hidden:''
+					},
+					watch:{
+		                	input_hidden:{
+		                		handler:function(){
+		                			vm.page=0;
+									getHistoryData();
+//		                			alert(vm.input_hidden)
+		                		}
+		                	},		                	
+		            }
+				});				
+				getTodayData();
+				getHistoryData();
+				
+			});
+			
+			
+			
+			//下拉刷新
+			function downfunc(self){
+				vm.page=1;
+				mui.ajax(url_all+'/cloud/shyf/api/np/v1/AlarmRecordMessageController/queryList.smvc?phoneAppStatus=2rows=10&',{
+					data:{
+						tenantId:tenantId,
+						page:1,
+						endemicAreaId:vm.input_hidden
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					async: true,
+					success:function(data){
+						if(data.msg=="查询成功"&&data.data.rows!=""&&data.data.rows!=null&&data.data.rows.length>0){
+							vm.historyData=data.data.rows;
+						}
+						self.endPullDownToRefresh(true);//结束下拉刷新
+						self.refresh(true);//重置上拉加载
+						plus.nativeUI.toast("刷新成功");
+						
+						todayTag=true;
+						historyTag=true;
+					},
+					error:function(xhr,type,errorThrown){
+						window.setTimeout(function(){
+							self.endPullDownToRefresh();//结束下拉刷新
+							plus.nativeUI.toast("错误");
+							
+							todayTag=true;
+							historyTag=true;
+						},1500);
+					}
+				});
+			}
+			
+			
+			//上拉加载
+			function upfunc(self){				
+				vm.page++;
+				mui.ajax(url_all+'/cloud/shyf/api/np/v1/AlarmRecordMessageController/queryList.smvc?phoneAppStatus=2&rows=10&',{
+					data:{
+						tenantId:tenantId,
+						page:vm.page,
+						endemicAreaId:vm.input_hidden					
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					async: true,
+					success:function(data){
+						if(data.msg=="查询成功"&&data.data.rows!=""&&data.data.rows!=null&&data.data.rows.length>0){
+							vm.historyData=data.data.rows.concat(vm.historyData);
+							if(data.data.rows.length<10){
+								self.endPullUpToRefresh(true);//没有更多的数据了
+							}else{
+								self.endPullUpToRefresh(true);//还有更多的数据
+							}
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						self.pullRefresh().refresh(true);
+					}
+				});
+			}
+			
+			//			筛选
+			mui('#header').on('tap','.mui-btn',function(){
+				plus.webview.currentWebview().setStyle({mask:'rgba(0,0,0,0.6)'});
+				mui.openWindow({
+					url:'Pop_box.html',
+    				id:'Pop_box',
+    				styles:{
+      					top:'20%',//新页面顶部位置
+     				 	bottom:'20%',//新页面底部位置
+      					width:'80%',//新页面宽度，默认为100%
+      					left:'10%',
+      					borderRadius: '20px',
+      					
+    				},
+    				show:{
+      					aniShow:'zoom-fade-out',//页面显示动画，默认为”slide-in-right“；
+      					duration:100//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+    				},
+    				waiting:{
+      					autoShow:false,//自动显示等待框，默认为true
+      				},
+      				extras:{
+      					webViewId:'alarm.html'
+      				}
+				});
+			})
+			window.addEventListener('showData',function(event){
+				plus.webview.currentWebview().setStyle({mask:'none'});			
+				vm.input_hidden=event.detail.id;
+				
+			});
+			
+			
+			//获取今日数据
+			function getTodayData(){
+				mui.ajax(url_all+'/cloud/shyf/api/np/v1/AlarmRecordMessageController/queryList.smvc?phoneAppStatus=1',{
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					async: true,
+					success:function(data){
+						if(data.msg=="查询成功"&&data.data.rows!=""&&data.data.rows!=null&&data.data.rows.length>0){
+							vm.todayData=data.data.rows;
+							console.log(vm.todayData)
+						}
+					},
+					error:function(xhr,type,errorThrown){
+		
+					}
+				});
+			}
+			
+			
+			//获取历史数据
+			function getHistoryData(){
+				vm.historyData=[]
+				mui.ajax(url_all+'/cloud/shyf/api/np/v1/AlarmRecordMessageController/queryList.smvc?phoneAppStatus=2rows=10&',{
+					data:{
+						tenantId:tenantId,
+						page:1,
+						endemicAreaId:vm.input_hidden	
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					async: true,
+					success:function(data){
+						if(data.msg=="查询成功"&&data.data.rows!=""&&data.data.rows!=null&&data.data.rows.length>0){
+							vm.historyData=data.data.rows;
+						}
+					},
+					error:function(xhr,type,errorThrown){
+		
+					}
+				});
+			}
+			//			点击进入详情页
+			mui('.mui-table-view').on('tap','.mui-table-view-cell',function(e){
+				var code=this.querySelectorAll("span")[3].innerHTML;
+	    		mui.openWindow({
+			         url: 'tracingC.html', 
+			         id:'tracingC.html',
+			         extras:{	
+	                    code:code							                  
+	               },
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+<style>
+	html{
+		font-size: 10px;
+	}
+.mui-bar-nav{
+       background-color: #1F79CE;}
+.mui-title{color:#fff}
+    a{color:#fff;}
+.mui-bar-tab .mui-tab-item.mui-active {
+	color: #FFFFFF;background-color: #00B2EE;}
+	.run .back{
+    margin: 1rem;
+}
+.back i{
+    font-size: 3rem;
+    color: #00a0ff;
+    margin: 0 1rem;
+}
+.back p {
+    font-size: 2rem;
+    color: #00a0ff;
+}
+.run .card .run_list{
+    margin: 0 1rem ;
+    /*padding: 0.5rem 0;*/
+    border-bottom: .1rem grey solid;
+}
+.run .col-50 .h3{
+    font-weight: 500;
+}
+.run .col-50{
+    height: 9rem;
+    paddiv-right: 1rem;
+}
+.run .col-40.tc{
+    border-bottom: .1rem grey solid;
+    height: 9rem;
+}
+.run .col-40.tc p{
+    margin: .5rem 0;
+    font-size: 1.5rem;
+}
+.blue_1{
+    background-color: #00a0ff!important;
+    box-shadow: 0rem 0rem 1rem #18b995;
+}
+.blue_2{
+    background-color: #a6bdd3;;
+}
+
+#bcid {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    bottom: 44px;
+    text-align: center;
+    background-color: #000000;
+}
+.tip {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0px -1px #103E5C;
+}
+footer {
+    width: 100%;
+    height: 44px;
+    position: absolute;
+    bottom: 0px;
+    line-height: 44px;
+    text-align: center;
+    color: #FFF;
+}
+.fbt {
+    width: 100%;
+    height: 100%;
+    background-color: #FFCC33;
+    float: left;
+}
+.fbt:active {
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+.mui-icon.mui-icon-search {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    font-size: 20px;
+}
+ input[type=text]{
+ 	     margin-bottom:0; 
+ }
+ .mui-btn.mui-icon {
+    font-size: 14px;
+    line-height: 1.42;
+    height: 40px;
+}
+img{
+	width: 30px;
+}
+.run_list{
+    margin: 0 1rem ;
+    border-bottom: .1rem grey solid;
+}
+ input[type=text]{
+ 	     margin-bottom:0; 
+ 	     height: 4.9rem;
+ }
+ .mui-btn.mui-icon {
+    font-size: 14px;
+    line-height: 1.42;
+    height: 4.9rem;
+    width: 4.9rem;
+}
+.icon {
+   width: 1em; 
+   height: 1em;
+   font-size:3rem;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}
+ .mui-btn.al {
+    font-size: 14px;
+    line-height: 1.42;
+    padding: 0;
+    height: 4.9rem;
+    width: 4.9rem;
+}
+#header{
+	z-index: 9999;
+}
+
+		</style>
+	</head>
+
+	<body>
+		<header  id="header" class="mui-bar mui-bar-nav" >
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" @click ='back()'></a>
+		    <h1 class="mui-title">医废追溯</h1>
+		</header>
+		<div class="mui-content" id='content' style="" @click ='back()'>
+			<!--头部输入框-->
+			<div class="rowf ac be" style="margin: 10px;position: relative;">
+	            <div class="run_top col-100" >
+	            <input type="text" class="run_input" v-model.trim="input"  placeholder="请输入医废编号">
+	                <i class="mui-icon mui-icon-search"></i>
+	            </div>
+	
+	        </div>
+		<!--列表项-->
+		<div v-show='isShow'>
+            <div class="mui-card" style='padding:10px;padding-bottom:0px' >
+                <div class="rowf ac be run_list" >
+                    <div>
+                        <p class="h4 run_1">{{list.rubbishCode}}</p>
+                        <p class="h4 run_2">{{list.endemicArea.location}}</p>
+                    </div>
+                    <div>
+                        <p class="tc"><img :src="'../images/zs'+list.rubbishType.orderIndex+'.png'" alt=""></p>
+                        <p class="h4 run_3">{{list.rubbishType.name}}</p>
+                    </div>
+
+                </div>
+				<div class="rowf ac " style="margin-top:1rem;">
+                    <div class="col-50 rowf M ac" style="position: relative;height:10rem;" >
+                        <p class="h3" style="margin-top:-2.5rem;">医废出库</p>
+                        <span :class="{ blue_1: list_1.TRANSPORT,blue_2:true,}" style="width: 1rem;height: 1rem;border-radius: 50%;position: absolute;top:3rem;right: 2rem;z-index: 10"></span>
+                        <span style="height: 11rem;width: .1rem;background-color: #ccc;position: absolute;top:3.5rem;right: 2.5rem;z-index: 1"></span>
+                    </div>
+                    <div class="col-40 tc rowf ac M" v-show="list_1.TRANSPORT" style="color:#333;">
+                        <div>
+                            <p>{{list_1.TRANSPORT.time}}</p>
+                            <div >
+                                <p class="rowf be">
+                                    <span>呼叫收运：</span>
+                                    <span>{{list_1.TRANSPORT.callOutStaffName}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="rowf ac "  >
+                    <div class="col-50 rowf M ac" style="position: relative;height:9rem;" >
+                        <p class="h3" style="margin-top:-2.8rem;">医废入库</p>
+                        <span :class="{ blue_1: list_1.STORAGE,blue_2:true,}" style="width: 1rem;height: 1rem;border-radius: 50%;position: absolute;top:3rem;right: 2rem;z-index: 10"></span>
+                        <span style="height: 10rem;width: .1rem;background-color:#ccc;position: absolute;top:3.5rem;right: 2.5rem;z-index: 1"></span>
+                    </div>
+                    <div class="col-40  rowf ac M" v-show="list_1.STORAGE" style="color:#333;margin-top: -1.5rem;">
+                      <div>
+                      <p>{{list_1.STORAGE.time}}</p>
+                       <div >
+                                <p class="rowf be">
+                                    <span>入库人：</span>
+                                    <span>{{list_1.TAKEOVER.gatherStaffName}}</span>
+                                </p>
+                           
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="rowf ac " >
+                    <div class="col-50 rowf M ac" style="position: relative;height:10rem;" >
+                        <p class="h3" style="margin-top:-3rem;">医废交接</p>
+                        <span :class="{ blue_1: list_1.TAKEOVER,blue_2:true,}" style="width: 1rem;height: 1rem;border-radius: 50%;position: absolute;top:3rem;right: 2rem;z-index: 10"></span>
+                        <span style="height: 13rem;width: .1rem;background-color: #ccc;position: absolute;top:3.5rem;right: 2.5rem;z-index: 1"></span>
+                    </div>
+                    <div class="col-40 rowf ac M" v-show="list_1.TAKEOVER" style="color:#333;">
+                       	<div>
+                            <p>{{list_1.TAKEOVER.time}}</p>
+                            <div >
+                                <p class="rowf be">
+                                    <span>交接人：</span>
+                                    <span>{{list_1.TAKEOVER.sendStaffName}}</span>
+                                </p>
+                                <p class="rowf be">
+                                    <span>收运人：</span>
+                                    <span>{{list_1.TAKEOVER.gatherStaffName}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="rowf ac " >
+                    <div class="col-50 rowf M ac" style="position: relative;height: 10rem" >
+                        <p class="h3" style="margin-top:1.5rem;">医废打包</p>
+                        <span :class="{blue_2:true, blue_1: list_1.PACK}" style="width: 1rem;height: 1rem;border-radius: 50%;position: absolute;top:5.5rem;right: 2rem;z-index: 9"></span>
+                        <!--<span style="height: 12rem;width: .1rem;background-color: grey;position: absolute;top:.5rem;right: 2.5rem;z-index: 1"></span>-->
+                    </div>
+                    <div class="col-40  rowf ac M" v-show="list_1.PACK" style="height: 9rem;border: none;color: #333;margin-top: 1.5rem;">
+                    <div class="">
+                        <p>{{list_1.PACK.time}}</p>
+                        <div >
+                        <p class="rowf be">
+                            <span>打包人：</span>
+                            <span>{{list_1.PACK.packStaffName}}</span>
+                        </p>
+                        <p class="rowf be">
+                            <span>重量：</span>
+                            <span>{{list_1.PACK.weight}}kg</span>
+                        </p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+     
+        </div>
+
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/iconfont.js"></script>
+		<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+	    <script type="text/javascript">
+	    	mui.init();			
+	        mui.plusReady(function(){
+	      	
+	            var self = plus.webview.currentWebview();
+//	            alert(self.code);
+	            vm.input =  self.code;
+	            vm.arry = self.list;
+
+	            vm.run(vm.input);
+
+	            
+	        });
+			
+	        var vm = new Vue({
+		               el:'#content',
+		                data:{
+		                	list:[],
+		                	list_1:[],		               
+		                	input:'',
+		                	code:'',
+		                	arry:[],
+		                	isShow:true,
+		                },
+		                methods:{
+		                	run:function(code){
+		                		that = this;
+//		                		alert('jinlaile')
+//		                		console.log(arry);
+//								alert(code);
+		                		if(code!=''&&code.length<12){
+		                			that.arry.forEach(function(item){
+			                			that.list_1=[];
+			                			that.list_1=[];
+			                			if(item.indexOf(code)>-1){
+			                				code = item;
+			                				console.log(code,'ttttttttttt');
+			                				mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?',{	
+										        	tenantId:tenantId,
+										        	code:code,
+											},function(data){
+													that.isShow = true;
+													console.log(data,'rrrrrrrrr')
+				            						that.list= data.data.content[0];
+				            						that.list_1 = JSON.parse(that.list.flowJson);
+				            						console.log(that.list,that.list_1 ,'666666666666666');
+				
+											},'json'
+											);
+			                			}else{
+			                				that.isShow = false;
+	//		                				alert('wy');
+			                			}
+			                		});
+		                		}else if(code.length<30){
+		                			mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?',{	
+								        	tenantId:tenantId,
+								        	code:code,
+									},function(data){
+//											alert('30');
+											if(data.data.content!=''){
+												that.isShow = true;
+												console.log(data,'rrrrrrrrr')
+			            						that.list= data.data.content[0];
+			            						that.list_1 = JSON.parse(that.list.flowJson);
+			            						console.log(that.list,that.list_1 ,'666666666666666');
+											}else{
+												that.isShow = false;
+											}
+											
+		
+									},'json'
+									);
+		                		}else if(code!=''){
+		                			that.isShow = false;
+		                			alert('isShow')
+		                		}else{
+		                			that.isShow = false;	                			
+		                		}
+		                		
+						  
+		                	},	              	
+		                	go:function(index,e){
+		                		console.log(index,e.currentTarget);
+		                		this.index = jQuery(e.currentTarget).find('p')[0].innerText;
+		                		console.log(this.index);
+		                	},
+		                	scaning:function(){
+		                		vm.input = '';
+		                		mui.openWindow({
+							         url: 'saomiao_4.html', 
+							         id:'saomiao_4',
+							         show:{
+							            aniShow:'slide-in-right',
+							            duration:300
+							          },
+							         waiting:{
+							          autoShow:false
+							         }
+							    });
+		                	}
+		                },
+		       		watch:{
+		                	input:{
+		                		handler:function(){
+		                			
+		                			if(this.input!=''){
+		                				this.run(this.input);
+		                			}else{
+		                				this.isShow = false;
+		                				this.list = '';
+		                				this.list_1 = '';
+		                			}
+		                			
+		                	    },
+
+		                    }
+			        }
+	        	});
+
+
+	    </script>
+	</body>
+</html>

@@ -1,0 +1,660 @@
+{
+  "home.html": {
+    "resources": [
+      "homePage.html",
+      "homePage/homePage.html",
+      "transfer/transfer.html",
+      "news/news.html",
+      "css/mui.min.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "news.html",
+      "transfer.html",
+      "homePage.html",
+      "setting.html",
+      "news/news.html",
+      "mine/setting.html",
+      "homePage/homePage.html",
+      "transfer/transfer.html",
+      "pack/pack.html"
+    ]
+  },
+  "login.html": {
+    "refer": [
+      "home.html",
+      "forget_1.html"
+    ],
+    "resources": []
+  },
+  "homePage.html": {
+    "refer": [
+      "noticeC.html",
+      "remind.html",
+      "alarm.html",
+      "product.html",
+      "tracing.html",
+      "notice_list.html",
+      "Monthly.html",
+      "Daily.html",
+      "monitoring.html"
+    ],
+    "resources": []
+  },
+  "remind.html": {
+    "refer": [
+      "remind_Pop.html"
+    ],
+    "resources": []
+  },
+  "remind_Pop.html": {
+    "refer": [
+      "sendData.html"
+    ],
+    "resources": []
+  },
+  "tracing.html": {
+    "refer": [
+      "saomiao_4.html",
+      "tracingC.html"
+    ],
+    "resources": []
+  },
+  "transfer.html": {
+    "refer": [
+      "transfer_scan.html"
+    ],
+    "resources": []
+  },
+  "alarm.html": {
+    "refer": [
+      "tracingC.html"
+    ],
+    "resources": []
+  },
+  "forget_1.html": {
+    "refer": [
+      "forget_2.html"
+    ],
+    "resources": []
+  },
+  "Monthly.html": {
+    "refer": [
+      "MonthlyC.html",
+      "Monthly_next.html"
+    ],
+    "resources": []
+  },
+  "Daily.html": {
+    "refer": [
+      "DailyC.html",
+      "Daily_next.html"
+    ],
+    "resources": []
+  },
+  "Daily_next.html": {
+    "refer": [
+      "DailyC.html"
+    ],
+    "resources": []
+  },
+  "product.html": {
+    "refer": [
+      "productC.html"
+    ],
+    "resources": []
+  },
+  "Monthly_next.html": {
+    "refer": [
+      "MonthlyC.html"
+    ],
+    "resources": []
+  },
+  "monitoring.html": {
+    "refer": [
+      "monitoringC.html",
+      "Daily_next.html"
+    ],
+    "resources": []
+  },
+  "setting.html": {
+    "refer": [
+      "set_self.html",
+      "set_feedback.html",
+      "set_about.html",
+      "set_update.html"
+    ],
+    "resources": []
+  },
+  "notice_list.html": {
+    "refer": [
+      "noticeC.html"
+    ],
+    "resources": []
+  },
+  "forget_2.html": {
+    "refer": [
+      "forget_3.html"
+    ],
+    "resources": []
+  },
+  "forget_3.html": {
+    "refer": [
+      "login.html"
+    ],
+    "resources": []
+  },
+  "login/login.html": {
+    "refer": [
+      "login/forget_1.html",
+      "home.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/index.js",
+      "js/vue.js",
+      "images/logo2.png"
+    ]
+  },
+  "login/forget_1.html": {
+    "refer": [
+      "login/forget_2.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "js/index.js",
+      "js/vue.js",
+      "css/mui.min.css",
+      "css/index.css"
+    ]
+  },
+  "mine/setting.html": {
+    "refer": [
+      "mine/set_self.html",
+      "mine/set_feedback.html",
+      "mine/set_update.html",
+      "mine/set_about.html"
+    ],
+    "resources": [
+      "images/user.png",
+      "images/sz.png",
+      "images/wm.png",
+      "fonts/mui.ttf",
+      "images/genx.png",
+      "images/fkui.png",
+      "css/mui.min.css",
+      "css/index.css",
+      "images/bg.png",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/jquery-3.0.0.min.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/homePage.html": {
+    "refer": [
+      "homePage/alarm.html",
+      "homePage/Daily.html",
+      "homePage/tracing.html",
+      "homePage/monitoring.html",
+      "homePage/remind.html",
+      "homePage/Monthly.html",
+      "homePage/noticeC.html",
+      "homePage/notice_list.html",
+      "homePage/Daily_next.html",
+      "homePage/MonthlyC.html",
+      "homePage/Monthly_next.html",
+      "homePage/alarm_user.html",
+      "homePage/tracing_user.html"
+    ],
+    "resources": [
+      "images/bg.png",
+      "images/ss.png",
+      "css/mui.min.css",
+      "css/index.css",
+      "js/index.js",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "images/logo2.png",
+      "images/yfri.png.png",
+      "images/yfyue.png.png",
+      "images/bjjl.png.png",
+      "images/yfzs.png.png",
+      "images/sftx.png.png",
+      "images/csjl.png.png",
+      "images/news.png",
+      "images/tz.png.png",
+      "images/read.jpg"
+    ]
+  },
+  "homePage/tracing.html": {
+    "refer": [
+      "homePage/tracingC.html",
+      "homePage/saomiao_4.html",
+      "homePage/Pop_box.html",
+      "homePage/tracing.html"
+    ],
+    "resources": [
+      "css/index.css",
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "images/scan.png"
+    ]
+  },
+  "homePage/monitoring.html": {
+    "refer": [
+      "homePage/monitoringC.html",
+      "homePage/Pop_box.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/index.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js"
+    ]
+  },
+  "homePage/remind.html": {
+    "refer": [
+      "homePage/remind_Pop.html",
+      "homePage/Pop_box.html",
+      "homePage/remind.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/vue.js",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/alarm.html": {
+    "refer": [
+      "homePage/tracingC.html",
+      "homePage/Pop_box.html",
+      "homePage/alarm.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/vue.js",
+      "js/mui.min.js",
+      "js/index.js",
+      "js/mui.pullToRefresh.js",
+      "js/mui.pullToRefresh.material.js"
+    ]
+  },
+  "login/forget_2.html": {
+    "refer": [
+      "login/forget_3.html",
+      "login/login.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "css/mui.min.css",
+      "css/index.css"
+    ]
+  },
+  "homePage/remind_Pop.html": {
+    "refer": [
+      "homePage/sendData.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/vue.js",
+      "js/mui.min.js"
+    ]
+  },
+  "homePage/Daily.html": {
+    "refer": [
+      "homePage/Daily_next.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "js/vue.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/notice_list.html": {
+    "refer": [
+      "homePage/noticeC.html",
+      "homePage/homePage.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "css/mui.min.css",
+      "images/tz.png.png",
+      "images/read.jpg"
+    ]
+  },
+  "transfer/transfer.html": {
+    "refer": [
+      "transfer/transfer_scan.html",
+      "transfer/transfer_scan_1.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "css/mui.min.css",
+      "css/index.css",
+      "images/people.png",
+      "images/scan_people.jpg",
+      "images/scan_bag.jpg"
+    ]
+  },
+  "homePage/Daily_next.html": {
+    "refer": [
+      "homePage/DailyC.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "js/vue.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/Monthly.html": {
+    "refer": [
+      "homePage/Monthly_next.html",
+      "homePage/Pop_box.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "js/vue.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/Monthly_next.html": {
+    "refer": [
+      "homePage/MonthlyC.html"
+    ],
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "js/vue.js",
+      "js/index.js"
+    ]
+  },
+  "transfer/transfer_scan.html": {
+    "refer": [
+      "transfer/transfer.html"
+    ],
+    "resources": [
+      "js/common.js",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/index.js"
+    ]
+  },
+  "homePage/alarm_user.html": {
+    "refer": [
+      "homePage/Pop_box.html"
+    ],
+    "resources": []
+  },
+  "homePage/tracing_user.html": {
+    "refer": [
+      "homePage/Pop_box.html",
+      "homePage/tracingC.html",
+      "homePage/saomiao_4.html"
+    ],
+    "resources": []
+  },
+  "homePage/saomiao_4.html": {
+    "refer": [
+      "homePage/tracingC.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "js/index.js",
+      "css/mui.min.css"
+    ]
+  },
+  "homePage/monitoringC.html": {
+    "href": "homePage/monitoringC.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/index.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/LCalendar.js",
+      "js/time.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/DailyC.html": {
+    "href": "homePage/DailyC.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/vue.js",
+      "js/index.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/noticeC.html": {
+    "href": "homePage/noticeC.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/sendData.html": {
+    "href": "homePage/sendData.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/index.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/Pop_box.html": {
+    "href": "homePage/Pop_box.html",
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "css/mui.min.css",
+      "css/index.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/MonthlyC.html": {
+    "href": "homePage/MonthlyC.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "css/LCalendar.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/LCalendar.js",
+      "js/time.js",
+      "libs/highcharts.js",
+      "libs/exporting.js",
+      "js/vue.js",
+      "js/index.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "homePage/tracingC.html": {
+    "href": "homePage/tracingC.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "homePage/saomiao_4.html"
+    ],
+    "priority": 0
+  },
+  "transfer/transfer_scan_1.html": {
+    "href": "transfer/transfer_scan_1.html",
+    "resources": [
+      "js/common.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "news/news.html": {
+    "href": "news/news.html",
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "css/mui.min.css",
+      "images/tz.png.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "mine/set_update.html": {
+    "href": "mine/set_update.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "images/fresh.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "mine/set_feedback.html": {
+    "href": "mine/set_feedback.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/vue.js",
+      "js/mui.min.js",
+      "js/jquery-3.0.0.min.js",
+      "js/index.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "mine/set_about.html": {
+    "href": "mine/set_about.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/index.js",
+      "images/code.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "mine/set_self.html": {
+    "href": "mine/set_self.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/index.css",
+      "js/mui.min.js",
+      "js/vue.js",
+      "js/jquery-3.0.0.min.js",
+      "js/index.js"
+    ],
+    "refer": [
+      "mine/set_update.html",
+      "mine/set_feedback.html",
+      "mine/set_self.html",
+      "mine/setting.html",
+      "mine/set_about.html"
+    ],
+    "priority": 0
+  },
+  "pack/pack.html": {
+    "refer": [
+      "pack/transfer_scan.html",
+      "pack/transfer_scan_1.html",
+      "pack/scan.html"
+    ]
+  }
+}

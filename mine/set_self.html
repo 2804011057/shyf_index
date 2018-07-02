@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+<style>
+		html{
+			font-size: 10px;
+		}
+		.mui-bar-nav{
+		        background-color: #1F79CE;}
+		.mui-title{color:#fff}
+		    a{color:#fff;}
+		.mui-bar-tab .mui-tab-item.mui-active {
+			color: #FFFFFF;background-color: #00B2EE;}
+		.update {
+			font-style: normal;
+			color: #999999;
+			margin-right: -25px;
+			/*font-size: 1.5rem*/
+		}
+		.mui-content>.mui-table-view:first-child {
+		    margin-top: 0px;
+		}
+		.mui-popover.mui-popover-action .mui-table-view {
+		    margin: 0 8px;
+		    text-align: center;
+		    color: #007aff;
+		    border-radius: 4px;
+		}
+		.mui-table-view-radio .mui-table-view-cell .mui-navigate-right:after {
+		    font-size: 30px;
+		    font-weight: 600;
+		    right: 9px;
+		    content: '';
+		    color: white;
+		    background-color: #38C64E;
+		    border-radius: 50%;
+		}
+		</style>
+		<link rel="stylesheet" href="../css/index.css">
+	</head>
+
+	<body>
+		<header  id="header" class="mui-bar mui-bar-nav">
+		      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">个人设置</h1>
+		</header>
+		<div class="mui-content" id='content'>
+				<ul class="mui-table-view mui-table-view-chevron">
+							<!--<li class="mui-table-view-cell">
+								<a href="#sheet2" class="mui-navigate-right tz">通知设置<i class="mui-pull-right update">通知</i></a>
+							</li>-->
+							<li class="mui-table-view-cell">
+								<a href="#sheet1" class="mui-navigate-right zt">字体设置<i class="mui-pull-right update">{{zt}}</i></a>
+							</li>
+				</ul>
+				<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+				    <!-- 可选择菜单 -->
+				    <ul class="mui-table-view mui-table-view-radio set">
+				      <li class="mui-table-view-cell "><a class="mui-navigate-right">小</a></li>
+				      <li class="mui-table-view-cell"><a class="mui-navigate-right">中</a></li>
+				      <li class="mui-table-view-cell"><a class="mui-navigate-right">大</a></li>
+				    </ul>
+				</div>
+				<div id="sheet2" class="mui-popover mui-popover-bottom mui-popover-action ">
+				    <!-- 可选择菜单 -->
+				    <ul class="mui-table-view mui-table-view-radio vidce">
+				      <li  class="mui-table-view-cell mui-selected">				        
+				        <a class="mui-navigate-right ">
+						震动+铃声
+						</a>
+				      </li>
+				      <li class="mui-table-view-cell">
+				        <a class="mui-navigate-right">
+						震动
+						</a>
+				      </li>
+				      <li class="mui-table-view-cell">
+				        <a class="mui-navigate-right">
+						铃声
+						</a>
+				      </li>
+				      <li class="mui-table-view-cell">
+				        <a class="mui-navigate-right">
+						不提醒
+						</a>
+				      </li>
+				    </ul>
+				</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript" src="../js/index.js"></script>
+		
+	    <script type="text/javascript">
+			    mui.init();			
+//		        function plusReady(shock){
+//		        	switch(shock){
+//						case '震动+铃声':
+////						plus.device.setVolume( 0.1 );
+////						plus.device.beep( 3 );
+////						plus.device.vibrate( 2000 );
+//						localStorage .setItem('setting','震动+铃声');
+//						break;						
+//						case '震动':
+////						plus.device.vibrate( 2000 );
+//						localStorage .setItem('setting','震动');
+//						break;
+//						case '铃声':
+////						plus.device.setVolume( 0.1 );
+////						plus.device.beep( 3 );
+//						localStorage .setItem('setting','铃声');
+//						break;
+//						default:
+////						plus.device.setVolume( 0 );
+//						localStorage .setItem('setting','');
+//						break;					
+//					};
+//				};
+			    var vm = new Vue({
+		               	el:'#content',
+		                data:{
+		                	zt:' 中',
+		                },
+		        });
+				vm.zt = localStorage.getItem('zt');
+
+			    var fontSize = '';
+			    var fontArry = [];
+//			    改变字体大小
+			    document.querySelector('.mui-table-view.mui-table-view-radio.set').addEventListener('selected',function(e){
+					$('.zt').find('.update')[0].innerHTML = e.detail.el.innerText;
+					var size = e.detail.el.innerText.split('')[0];
+					localStorage .setItem('zt',size);
+//					alert(size+'fffff')
+					switch(size){
+						case '小':
+						localStorage .setItem('size','9px');
+						document.getElementsByTagName('body')[0].style.fontSize='15px';
+						break;						
+						case '中':
+						localStorage .setItem('size','10px');
+						document.getElementsByTagName('body')[0].style.fontSize='17px';
+						break;						
+						default:
+						localStorage .setItem('size','11px');
+						document.getElementsByTagName('body')[0].style.fontSize='18px';
+						break;					
+					};
+					var viewArry = ['homePage/homePage.html','alarm.html','Daily.html','Daily_next.html','DailyC.html','Monthly.html','MonthlyC.html','setting.html',
+					'notice_list.html','noticeC.html','monitoring.html','monitoringC.html','remind.html','set_about.html','set_self.html','set_feedback.html',
+					'tracing.html','tracingC.html','transfer/transfer.html','set_update.html','news/news.html'];
+//					遍历刷新所有页面,函数在index.js里面
+					viewArry.map(function(item){
+						mui.fire(plus.webview.getWebviewById(item),'reloadAll');
+					});
+
+
+				});
+//				改变通知形式
+//				document.querySelector('.mui-table-view.mui-table-view-radio.vidce').addEventListener('selected',function(e){
+////					console.log("当前选中的为："+e.detail.el.innerText,e.detail);
+//
+//					$('.tz').find('.update')[0].innerHTML = e.detail.el.innerText;
+//					var shock = e.detail.el.innerText.trim();
+//					console.log(shock);
+//					switch(shock){
+//						case '震动+铃声':
+//						plusReady(shock);
+//						break;						
+//						case '震动':
+//						plusReady(shock);
+//						break;
+//						case '铃声':
+//						plusReady(shock);
+//						break;
+//						default:
+//						plusReady(shock);
+//						break;					
+//					};
+//				});
+	
+				
+	    </script>
+	</body>
+</html>

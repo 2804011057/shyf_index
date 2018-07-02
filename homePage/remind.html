@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css" />
+		<script src="../js/vue.js"></script>
+		<style>
+			html {
+				font-size: 10px;
+			}
+			
+			p.h4 {
+				font-size: 1.5rem;
+				color: black;
+				font-family: 微软雅黑;
+				font-weight: 400;
+				margin: 0.5rem 0px;
+			}
+			
+			.red_2.h4 {
+				color: #ED2434;
+			}
+			
+			p {
+				font-size: 14px;
+				margin-top: 0;
+				margin-bottom: 10px;
+				color: #8f8f94;
+			}
+			
+			.M {
+				justify-content: center;
+				-webkit-justify-content: center;
+			}
+			
+			.ac {
+				align-items: center;
+				-webkit-align-items: center;
+			}
+			
+			.rowf {
+				display: flex;
+				display: -webkit-flex;
+			}
+			
+			a {
+				color: #fff;
+			}
+			
+			.red_1.h4{
+	color:#F39800;
+	}
+	.button.red_4{
+		width: 150px;
+	 	height: 40px;
+	    border-radius: 20px;
+	    background-color:#ffda00;
+	    color: white;
+	}
+	.button.red_1{
+	background-color:#F39800 ;
+	 	width: 150px;
+	 	height: 40px;
+	    color: white;
+	    border-radius: 20px;
+	}
+	.red_2.h4{
+	color:#ED2434;  
+	}
+	.button.red_2{
+	background-color:#ED2434 ;
+	    width: 150px;
+	 	height: 40px;
+	    color: white;
+	    border-radius: 20px;
+	}
+	.red_3.h4{
+	color:#38C64E;  
+	}
+	.button.red_3{
+	background-color:#38C64E ;
+	    width: 150px;
+	 	height: 40px;
+	    color: white;
+	    border-radius: 20px;
+	}
+	#pullrefresh{
+		margin-top: 54px;
+	}
+	.mui-bar-nav{
+    	background-color: #1F79CE;
+    	color: white;
+    }
+    .mui-title{color:#fff}
+    .sendBtn{
+    	background-color: #38C64E;
+    	 width: 150px;
+	 	height: 40px;
+	    color: white;
+	    border-radius: 20px;
+    }
+    .mui-btn.mui-pull-right{
+				top: 5px;
+			}
+	        
+		</style>
+		
+	</head>
+
+	<body>
+		<header  id="header" class="mui-bar mui-bar-nav">
+		      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">收废提醒</h1>
+		    <input type="text" class="input_hidden" v-model="input_hidden"  />
+			<button class="mui-btn mui-btn-green mui-pull-right">筛选</button>
+		</header>
+
+		<div id="pullrefresh" v-cloak>
+			<div class='select' v-for="num in list">
+				<div class="mui-card" style="padding:20px;">
+					<p class="h4 rowf be"><span>医废编号：</span><span class="recod">{{num.code}}</span></p>
+					<p class="h4 rowf be"><span>医废类型：</span><span class="recod">{{num.typeName}}</span></p>
+					<p class="h4 rowf be"><span>打包时间：</span><span class="recod">{{num.packTime}}</span></p>
+					<p class="h4 rowf be red_{{num.status}}"><span>延时时长：</span><span class="recod">{{num.ysTime.toFixed(1)}}&nbsp;小时</span></p>
+					<div hidden>
+						<p class=""><span class="recod">{{num.status}}</span></p>
+						<p class=""><span class="recod">{{num.endemicAreaName}}</span></p>
+						<p class=""><span class="recod">{{num.id}}</span></p>
+						<p class=""><span class="recod">{{num.status}}</span></p>
+					</div>
+
+				</div>
+				<div class="rowf M ac ">
+					<a>
+						<button class="button  red_{{num.status}} ">
+			                   	收废提醒
+			            </button>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		
+		<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style: 'circle',
+						
+						callback: pulldownRefresh
+					},
+					up: {
+						auto: true,
+						callback: pullupRefresh,
+						contentrefresh: "正在加载..."
+					}
+				}
+			});
+			mui.plusReady(function(){
+				var ws=plus.webview.currentWebview();
+				ws.addEventListener('maskClick', function(){
+					if(plus.webview.getWebviewById('remind_Pop')!=""&&plus.webview.getWebviewById('remind_Pop')!=null){
+						plus.webview.getWebviewById('remind_Pop').close();
+					}
+					if(plus.webview.getWebviewById('Pop_box')!=""&&plus.webview.getWebviewById('Pop_box')!=null){
+						plus.webview.getWebviewById('Pop_box').close();
+					}
+					if(plus.webview.getWebviewById('sendData')!=""&&plus.webview.getWebviewById('sendData')!=null){
+						plus.webview.getWebviewById('sendData').close();
+					}
+					ws.setStyle({mask:'none'});
+				},false);
+				if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					return;
+				}
+				getAllPhone();
+			});
+			
+			var vm = new Vue({
+				el: '#pullrefresh',
+				data: {
+					list: [],
+					people: [],
+					select: '',
+					isShow: true,
+					msg: '',
+					HL: '',
+					button: '',
+					phoneNum: '',
+					hidden: false,
+					count: 0,
+					count_1: 0,
+					index:'',
+					input_hidden:''
+
+				},
+				watch:{
+	                	input_hidden:{
+	                		handler:function(){
+	                			vm.list=[];
+	                			vm.count=0;
+	                			pullupRefresh();
+	                			
+	                		}
+	                	},		                	
+	            }
+			});
+			
+			//列表的事件委托
+			mui('#pullrefresh').on('tap','.select',function(){
+				var code=this.querySelectorAll("span")[1].innerHTML;
+				var typeName=this.querySelectorAll("span")[3].innerHTML;
+				var packTime=this.querySelectorAll("span")[5].innerHTML;
+				var ysTime=this.querySelectorAll("span")[7].innerHTML;
+				var btn=this.querySelectorAll("button")[0].innerHTML;
+//				获取点击按钮所在的序号
+				vm.index = $(this).index()
+
+				
+				vm.msg=this.innerHTML;
+				plus.webview.currentWebview().setStyle({mask:'rgba(0,0,0,0.6)'});
+				var yfId="";
+				var status="";
+				var endemicAreaName="";
+				for(var i=0;i<vm.list.length;i++){
+					if(code==vm.list[i].code){
+						yfId=vm.list[i].id;
+						status=vm.list[i].status;
+						endemicAreaName=vm.list[i].endemicAreaName;
+						break;
+					}
+				}
+				mui.openWindow({
+					url:'remind_Pop.html',
+    				id:'remind_Pop',
+    				styles:{
+      					top:'20%',//新页面顶部位置
+     				 	bottom:'20%',//新页面底部位置
+      					width:'80%',//新页面宽度，默认为100%
+      					left:'10%',
+      					borderRadius: '20px',
+      					
+    				},
+    				show:{
+      					aniShow:'zoom-fade-out',//页面显示动画，默认为”slide-in-right“；
+      					duration:100//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+    				},
+    				waiting:{
+      					autoShow:false,//自动显示等待框，默认为true
+      				},
+      				extras:{
+      					yfId:yfId,//医废ID
+      					peopleData:vm.people,
+      					code:code,
+      					status:status,
+      					endemicAreaName:endemicAreaName,
+						typeName:typeName,
+						packTime:packTime,
+						ysTime:ysTime
+      				}
+				});
+			});
+
+
+			//上拉加载具体业务实现
+			function pullupRefresh() {
+				if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					plus.nativeUI.toast("当前网络异常，请检查后重试");
+					return;
+				}				
+				vm.count++;
+				mui.ajax(url_all + '/cloud/shyf/api/np/v1/gatherRemind/queryList.smvc?', {
+					data: {
+						rows: 10,
+						tenantId: tenantId,
+						page: vm.count,
+						endemicAreaId:vm.input_hidden
+					},
+					dataType: 'json',
+					async: false,
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(JSON.stringify(data.data));
+						if(data.data==null){
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有更多数据了
+
+						}
+						if(data.msg == "查询成功" && data.data.rows && data.data.rows != ""&& data.data != null && data.data.rows != null && data.data.rows.length > 0) {
+							vm.list = vm.list.concat(data.data.rows);
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+							if(data.data.rows.length < 1) {
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有更多数据了
+							}
+						} else {
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有更多数据了
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				});
+
+			}
+
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					plus.nativeUI.toast("当前网络异常，请检查后重试");
+					return;
+				}
+				mui.ajax(url_all + '/cloud/shyf/api/np/v1/gatherRemind/queryList.smvc', {
+					data: {
+						rows: 10,
+						tenantId: tenantId,
+						page: 1,
+						endemicAreaId:vm.input_hidden
+					},
+					dataType: 'json',
+					async: true,
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data.msg == "查询成功" && data.data.rows != "" && data.data.rows != null && data.data.rows.length > 0) {
+							vm.count = 1;
+							vm.list = data.data.rows;
+							plus.nativeUI.toast("更新成功");
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							if(data.data.rows.length < 1) {
+								mui('#pullrefresh').pullRefresh().disablePullupToRefresh(); //小于10  证明没有多的数据了  直接禁用
+								return;
+							}
+						}else{
+							mui('#refreshContainer').pullRefresh().endPulldown(true);
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					},
+					error: function(xhr, type, errorThrown) {
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				});
+			}
+			
+			
+			//获取所有的联系人
+			function getAllPhone(){
+				mui.ajax(url_all+'/cloud/shyf/api/np/v1/staff/queryList.smvc?', {
+					data: {
+						tenantId:tenantId
+					},
+					dataType: 'json',
+					async: true,
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data.msg=="查询成功"&&data.data.rows!=""&&data.data.rows!=null&&data.data.rows.length>0){
+							vm.people= data.data.rows;
+							console.log(vm.people)
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						
+					}
+				});
+			}
+			
+			
+			window.addEventListener('showDataRemind',function(){
+				plus.webview.currentWebview().setStyle({mask:'none'});
+				$('.button')[vm.index-1].className='button sendBtn';
+				$('.button')[vm.index-1].innerHTML='已发送'
+				//TODO  在这里修改页面DOM显示
+			});
+		//			筛选
+			mui('#header').on('tap','.mui-btn',function(){
+				plus.webview.currentWebview().setStyle({mask:'rgba(0,0,0,0.6)'});
+				mui.openWindow({
+					url:'Pop_box.html',
+    				id:'Pop_box',
+    				styles:{
+      					top:'20%',//新页面顶部位置
+     				 	bottom:'20%',//新页面底部位置
+      					width:'80%',//新页面宽度，默认为100%
+      					left:'10%',
+      					borderRadius: '20px',
+      					
+    				},
+    				show:{
+      					aniShow:'zoom-fade-out',//页面显示动画，默认为”slide-in-right“；
+      					duration:100//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+    				},
+    				waiting:{
+      					autoShow:false,//自动显示等待框，默认为true
+      				},
+      				extras:{
+      					webViewId:'remind.html'
+      				}
+				});
+			});
+			window.addEventListener('showData',function(event){
+				plus.webview.currentWebview().setStyle({mask:'none'});
+				vm.input_hidden=event.detail.id
+			});
+		</script>
+
+	</body>
+
+</html>
