@@ -33,16 +33,18 @@
 				<span class="mui-icon iconfont icon-message"></span>
 				<span class="mui-tab-label">消息</span>
 			</a>
-			<a id='transfer' class="mui-tab-item transfer" href="pack/pack.html">
+			<a  id='transfer' class="mui-tab-item transfer" href="pack/pack.html">
 				<span class="mui-icon iconfont icon-jiaojieban"></span>
 				<span class="mui-tab-label">打包</span>
 			</a>
+
 			<a class="mui-tab-item" href="mine/setting.html">
 				<span class="mui-icon iconfont icon-wode"></span>
 				<span class="mui-tab-label">我的</span>
 			</a>
 		</nav>
 		<script src="js/mui.min.js"></script>
+		<script src="js/vue.js"></script>
 		<script src="js/jquery-3.0.0.min.js"></script>
 		<script src="js/index.js"></script>
 		<script>
@@ -101,17 +103,6 @@
 					mui.extend(aniShow,temp);
 					plus.webview.show(targetTab,"fade-in",300);
 				}
-
-				
-				//更改当前活跃的选项卡
-//				if(localStorage.getItem('f_type') == '10'){
-//					mui.alert('打包人不能使用此功能', '欢迎使用交接功能', function() {
-//							
-//					});
-//					activeTab = targetTab;
-//					plus.webview.hide(activeTab);
-////					activeTab = targetTab;
-//				}else{
 //					
 					//隐藏当前;
 					plus.webview.hide(activeTab);

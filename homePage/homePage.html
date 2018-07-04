@@ -123,6 +123,11 @@
 			.info_hidden{
 				display: none;
 			}
+			.noInformation{
+				color: lightgray;
+				font-size: 2rem;
+				height: 3rem;
+			}
 		</style>
 	</head>
 	<body>
@@ -186,7 +191,7 @@
 		</div>
 
 <!--列表项-->
-		        <ul class="mui-table-view" style="overflow: hidden;">	
+		        <ul class="mui-table-view" style="overflow: hidden;" v-show='inform'>	
 					<li class="mui-table-view-cell mui-media" v-for = 'num2 in inform'  @click="list_go($index,$event)">
 
 						<a href="javascript:;">
@@ -205,6 +210,9 @@
 					</li>
 
 				</ul>
+				<div class="noInformation rowf M ac" v-show="!inform">
+					暂无通知
+				</div>
 	</div>
 
 		<script src="../js/index.js"></script>
@@ -217,7 +225,6 @@
 		
 <script>
 				mui.plusReady(function(){
-					console.log(plus.webview.currentWebview().id);
 				})
 				mui.init({
 					preloadPages:[
@@ -248,23 +255,20 @@
 
 		                },
 		                methods:{
-		                	list:function(a){
+		                	list:function(){
 		                		that = this;
 		                		mui.post(url_all+'/cloud/shyf/api/np/v1/jkrubbishMessageRelease/queryList.smvc?&status=0&rows=10&page=1',{
 						        	tenantId:tenantId,
 						        	code:localStorage.getItem('staffCode'),
 								},function(data){									
-            						that.inform = data.data.rows;
-            						console.log(that.inform)
+//          						that.inform = data.data.rows;
+									if(data.data == null){
+										that.inform = '';
+									}else{
+										that.inform = data.data.rows;
+									}
 								},'json'
 								);
-//								mui.get('yaowen.json',{
-//						        	category:'news'
-//								},function(data){
-//									console.log(data)
-//          						that.inform = data.data.rows;
-//								},'json'
-//								);
 
 		                	},
 		                	list_go:function(index,e){
@@ -334,19 +338,18 @@
 
 		                }  
 		       });
+		       vm.list();
+		       vm.todayList();
 					//刷新消息
 				window.addEventListener('refresh', function(e) { 
-//					alert('huilai')
 			        location.reload();  
-			        //document.getElementById('indexHeader').innerHTML = 'Hello World';  
 			    })  
 		        //过滤器
 				Vue.filter('split', function(value) {
 				  if (!value) { return ''}
 				  return value.createAlarmTime.split(' ')[1]
 				})
-		        vm.list();
-		        vm.todayList();
+		        
 		        vm.number = localStorage.getItem('staffCode');
 		        
 		        vm.height = $(window).height()-$('.homePage_top').height()-5;

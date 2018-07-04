@@ -156,15 +156,16 @@
 			 */
 			function pullupRefresh() {
 				count++;
+				alert(count)
 				setTimeout(function() {
 					mui.post(url_all+'/cloud/shyf/api/np/v1/jkrubbishMessageRelease/queryList.smvc?&status=0&rows=10',{
 					    tenantId:tenantId,
 					    page:count,
 					    code:localStorage.getItem('staffCode'),
 					},function(data){
-							if(data.data.rows!=''){
+						console.log(data.data)
+							if(data.data!='' && data.data != null){
 								vm.list= vm.list.concat(data.data.rows);
-	            				console.log(vm.list,'666666666666666');
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
 							}else{
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
