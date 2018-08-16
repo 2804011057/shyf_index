@@ -231,9 +231,7 @@
 	            	vm.codeName = self.eName;
 		            vm.code = self.code;
 		            vm.input = self.pretime;
-//		            alert(vm.codeName)
-//		            alert(vm.code)
-//		            alert(vm.input)
+
 
 			        
 		        });
@@ -293,7 +291,7 @@
 									partitionId:that.code
 								},function(data){
 									//服务器返回响应，根据响应结果，分析是否登录成功；
-									console.log(data,'9999999999999');
+									console.log(JSON.stringify(data.data.rows),'9999999999999');
 									that.work = data.data.rows;
 								
 									},'json'
@@ -303,6 +301,9 @@
 		                		
 		                		that = this;
 //		                		alert(that.code)
+								console.log(time)
+								console.log(tenantId)
+								console.log(url_all+'/cloud/shyf/api/np/v1/rubbishPackCountAPPMonth/goToCountAPPMonth.smvc?date='+time+'&tenantId='+tenantId+"&partitionId="+that.code)
 		                		that.headCont=[];
 						        mui.post(url_all+'/cloud/shyf/api/np/v1/rubbishPackCountAPPMonth/goToCountAPPMonth.smvc?',{
 									date:time,
@@ -325,9 +326,10 @@
 									code:that.code
 								},function(data){
 									//服务器返回响应，根据响应结果，分析是否登录成功；
-//									console.log(data,'ppppppppppppp');
+									console.log(url_all+'/cloud/shyf/api/np/v1/rubbishPackCountAPPMonth/goToCountKSAPPMonth.smvc?date='+time+'&tenantId='+tenantId+'&code='+that.code);
 									that.pictureCont = data.data;
-									console.log(that.pictureCont,'rrrrrrr');
+									console.log(time);
+									console.log(that.code);
 									var newArry,sortBy,newArry_1;				
 									newArry = that.pictureCont;
 					                var sortBy= function (proper) {
@@ -390,7 +392,7 @@
 				                    }
 				                },
 				                yAxis: {
-				                    min: '1',
+				                    min: '0',
 				                    title: {
 				                        text: '总量 (kg)',
 				                        align: 'high'

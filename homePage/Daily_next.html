@@ -281,7 +281,7 @@
 //		                	头部数据获取
 
 	                	head:function(a){	
-//							alert('ddddd')
+//							console.log(vm.codeId)
 							that = this;	               		
 					        mui.post(url_all+'/cloud/shyf/api/np/v1/rubbishPackCountAppDay/goToCountDay.smvc?',{
 								date:a,
@@ -419,7 +419,7 @@
 			                    }
 			                },
 			                yAxis: {
-			                    min: '1',
+			                    min: '0',
 			                    title: {
 			                        text: '总量 (kg)',
 			                        align: 'high'

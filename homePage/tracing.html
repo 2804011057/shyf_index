@@ -201,11 +201,12 @@
 				pullRefresh: {
 					container: '#pullrefresh',
 					down: {
+						auto:true,
 						style:'circle',
 						callback: pulldownRefresh
 					},
 					up: {
-						auto:true,
+						// auto:true,
 						contentrefresh: '正在加载...',
 						callback: pullupRefresh
 					}
@@ -232,17 +233,18 @@
 	                	arry:[],
 	                	index:'',
 	                	count:0,
-	                	input_hidden:'',
+	                	input_hidden:localStorage.getItem('partitionId'),
 	                	count_2:0
 	                	
 	                },
 	                methods:{},
 	                watch:{
 		                	input_hidden:{
+											
 		                		handler:function(){
-									vm.list=[];
-									vm.arry=[];
-									vm.count=0;
+													vm.list=[];
+													vm.arry=[];
+													vm.count=0;
 		                			pullupRefresh(vm.input_hidden)		                			
 		                		}
 		                	},		                	
@@ -287,34 +289,69 @@
 			/**
 			 * 上拉加载具体业务实现
 			 */
-			function pullupRefresh(partitionId) {
-					if(partitionId==undefined){
-						partitionId='';
-//						alert(partitionId)
-					}				
-					vm.count++;
+			function pullupRefresh() {
+					if(vm.input_hidden==null){
+						vm.input_hidden = localStorage.getItem('code');
+					};	
 					setTimeout(function() {
-						mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
-				        	tenantId:tenantId,
-				        	page:vm.count,
-				        	endemicAreaId:partitionId
-						},function(data){
-							console.log(JSON.stringify(data.data.content),'TTTT');
-							if(data.data.content){
-								vm.list= vm.list.concat(data.data.content);
-								vm.list.forEach(function(item){
-									vm.arry.push(item.rubbishCode);
-								});
-								mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
-							}else{
-								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
-							}
-	
-							console.log(vm.list,vm.arry,'666666666666666');
-						},'json'
-						);
+						console.log(vm.count)
+						if(vm.input_hidden == localStorage.getItem('code')){
+									mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+												tenantId:tenantId,
+												page:vm.count,
+												partitionId:vm.input_hidden
+									},function(data){
+										console.log(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&tenantId='+tenantId+'&page='+vm.count+'&partitionId='+vm.input_hidden);
+										if(data.data.content){
+											vm.list= vm.list.concat(data.data.content);
+											vm.list.forEach(function(item){
+												vm.arry.push(item.rubbishCode);
+											});
+											if(data.data.content.length<10){
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+											}else{
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+											}
+											vm.count++;
+										}else{
+											mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+										}
+				
+										// console.log(vm.list,vm.arry,'666666666666666');
+									},'json'
+									);
+						}else{
+										console.log(vm.count);
+										mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+													tenantId:tenantId,
+													page:vm.count,
+													endemicAreaId:vm.input_hidden
+										},function(data){
+											console.log(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&tenantId='+tenantId+'&page='+vm.count+'&endemicAreaId='+vm.input_hidden);
+											if(data.data.content){
+												vm.list= vm.list.concat(data.data.content);
+												vm.list.forEach(function(item){
+													vm.arry.push(item.rubbishCode);
+												});
+												console.log()
+												if(data.data.content.length<10){
+													mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+												}else{
+													mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+												}
+												vm.count++;
+											}else{
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+											}
+					
+										},'json'
+										);
+						}
+						
 						
 					}, 1500);
+					
+
 				
 			}
 
@@ -326,20 +363,43 @@
 				vm.list=[];
 				vm.arry=[];
 				mui('#pullrefresh').pullRefresh().refresh(true);
-				setTimeout(function() {					
-					mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
-			        	tenantId:tenantId,
-			        	page:vm.count,
-			        	endemicAreaId:vm.input_hidden
-					},function(data){
+				setTimeout(function() {	
+					if(vm.input_hidden==null){
+						vm.input_hidden = localStorage.getItem('code');
+					};
+					if(vm.input_hidden == localStorage.getItem('code')){
+						mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+									tenantId:tenantId,
+									page:vm.count,
+									partitionId:vm.input_hidden,
+									// partitionId
+						},function(data){
+						
+							vm.list= data.data.content;
+							vm.list.forEach(function(item){
+								vm.arry.push(item.rubbishCode);
+							})
+							console.log(vm.list,vm.arry,'666666666666666');
+						},'json'
+						);
+					}else{
+						mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+									tenantId:tenantId,
+									page:vm.count,
+									endemicAreaId:vm.input_hidden,
+									// partitionId
+						},function(data){
+						
+							vm.list= data.data.content;
+							vm.list.forEach(function(item){
+								vm.arry.push(item.rubbishCode);
+							})
+							console.log(vm.list,vm.arry,'666666666666666');
+						},'json'
+						);
+					}
 					
-						vm.list= data.data.content;
-						vm.list.forEach(function(item){
-							vm.arry.push(item.rubbishCode);
-						})
-						console.log(vm.list,vm.arry,'666666666666666');
-					},'json'
-					);
+					
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 					mui.toast("更新了");
 				}, 1500);
@@ -371,10 +431,8 @@
 					});
 				});
 				window.addEventListener('showData',function(event){
-					plus.webview.currentWebview().setStyle({mask:'none'});
-					
-					vm.input_hidden=event.detail.id
-	
+					plus.webview.currentWebview().setStyle({mask:'none'});					
+					vm.input_hidden=event.detail.id	
 				});
 
 		</script>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/index.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav {
+				background-color: #1F79CE;
+				color: white;
+			}
+			.mui-bar .mui-title{
+				color: white;
+			}
+			.mui-bar-nav.mui-bar .mui-icon{
+				color:white;
+			}
+			#container,#imgId,#qrcode{
+				background-color: white;
+				height: 200px;
+				width: 100%;}
+			#qrcode{
+				display: none;
+				}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+
+	<body>
+		<!-- 顶部导航 -->
+		<header class="mui-bar mui-bar-nav bgc_main head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打印</h1>
+		</header>
+		<div class="mui-content">
+			<button id="test">打印机连接成功的时候，点击我打印测试</button>
+			
+			<canvas id="container" style="border:1px solid #d3d3d3;" @click=go()>
+				
+		</div>
+		<div id='qrcode'></div>
+		<img id='imgId' src="" alt="">		
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<!-- <script src="../js/qrcode.js" type="text/javascript" charset="utf-8"></script> -->
+		<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/printer.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			(function() {
+				console.log('1');
+				
+				//判断缓存的设备地址
+				mui.plusReady(function() {
+					var vm = new Vue({
+						el:'.mui-content',
+							data:{
+								printerCode:''
+							}
+					});
+					var self = plus.webview.currentWebview();	
+					vm.printerCode = self.printerCode;
+					var savedBleId = localStorage.getItem("bleId");
+					if(savedBleId) {
+						var bleObj = new ConnectPrinter(savedBleId);
+					} else {
+						plus.nativeUI.confirm('打印机为设置，是否前往设置？',function(e){
+							if(e.index===0){
+								mui.openWindow({
+									id:"printer_1.html",
+									url:"printer_1.html"
+								});
+							}
+						});
+					};
+					
+					//测试打印
+					document.getElementById("test").addEventListener("tap",function(){
+						// alert('1')
+						var PrintText = "                  阿里巴巴采购部";
+							PrintText+="\...................";
+							if(bleObj){
+								bleObj.gotoPrint(PrintText);
+							}else{
+								bleObj = new ConnectPrinter(savedBleId);
+							}
+						
+					});
+					// canvas生成
+					
+					alert(vm.printerCode)
+								
+				});
+				
+				var c=document.getElementById("container");
+				var ctx=c.getContext("2d");
+				ctx.strokeStyle="red";				
+				ctx.font="15px Times New Roman";
+				ctx.fillText("杨行镇社区卫生服务中心",5,20);
+				ctx.font="12px Times New Roman";
+				ctx.fillText("编号："+'125615461451',110,40);
+				ctx.fillText("来源："+'第一病房',110,60);
+				ctx.fillText("种类："+'感染性医废',110,80);
+				ctx.fillText("时间："+'2018-05-06',110,100);
+				ctx.fillText("打包人："+'李明辉',110,120);
+				
+				ctx.stroke();
+				var imgObj = new Image();
+				var imgObj_1 = new Image();
+				var qrimage = new Image();
+				$('#qrcode').qrcode({width: 80,height: 80,text: "2061564153616451561"});
+				qrimage = $('#qrcode').find('canvas')[0].toDataURL("image/png");
+				// console.log(qrimage)
+				imgObj_1.src = "../images/icon_2.png";
+				imgObj.src = qrimage;
+				//待图片加载完后，将其显示在canvas上
+				imgObj_1.onload = function(){
+					// ctx.drawImage(this, 200, 5);//this即是imgObj,保持图片的原始大小：470*480
+					ctx.drawImage(this,250, 5,25,25);//改变图片的大小到1024*768					
+					$('#imgId').attr('src',c.toDataURL());
+					// console.log(c.toDataURL())
+					// console.log(base64ToBlob(c.toDataURL()))
+					
+				};
+				imgObj.onload = function(){
+					// ctx.drawImage(this, 200, 5);//this即是imgObj,保持图片的原始大小：470*480
+					ctx.drawImage(this,5, 35,80,80);//改变图片的大小到1024*768
+				};
+// 				
+// 				function base64ToUint8Arry(base64) {  
+// 					let bstr = atob(base64);
+// 					let n = bstr.length;
+// 					let u8arr = new Uint8Array(n);  
+// 					while (n--) {  
+// 						u8arr[n] = bstr.charCodeAt(n); // 转换编码后才可以使用charCodeAt 找到Unicode编码
+// 					}
+// 					return u8arr;
+// 				}
+// 
+// 				function base64ToBlob(base64) {  
+// 					let bstr = atob(base64);
+// 					let n = bstr.length;
+// 					let u8arr = new Uint8Array(n);  
+// 					while (n--) {  
+// 						u8arr[n] = bstr.charCodeAt(n); // 转换编码后才可以使用charCodeAt 找到Unicode编码
+// 					}
+// 					return new Blob([u8arr]);
+// 				}
+
+
+// 					var bin = c.toDataURL().split(',')[1];
+// 					var type = 'image/png';
+// 					//创建空的Uint8Array
+//                     var buffer = new Uint8Array(bin.length);
+//                     //将图像数据逐字节放入Uint8Array中
+//                     for (var i = 0; i < bin.length; i++) {
+//                         buffer[i] = bin.charCodeAt(i);
+//                     }
+// 					console.log(buffer)
+// 					
+//                     //利用Uint8Array创建Blob对象
+//                     var blob = new Blob([buffer.buffer], {type: type});
+//                     var fileReader = new FileReader();
+//                     fileReader.readAsBinaryString(blob)
+//                                          //提取成功
+//                     fileReader.onload=function(evt){
+//                         if(evt.target.readyState == FileReader.DONE){  
+// 											//二进制数据结果
+// 							   var imgFlag = evt.target.result;
+// 							   console.log(imgFlag)
+// 
+// 						 }
+// 					 }
+				
+
+
+
+				
+				
+				
+				
+			})();
+			
+
+		</script>
+	</body>
+
+</html>

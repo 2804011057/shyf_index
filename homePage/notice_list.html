@@ -156,7 +156,6 @@
 			 */
 			function pullupRefresh() {
 				count++;
-				alert(count)
 				setTimeout(function() {
 					mui.post(url_all+'/cloud/shyf/api/np/v1/jkrubbishMessageRelease/queryList.smvc?&status=0&rows=10',{
 					    tenantId:tenantId,
@@ -164,7 +163,7 @@
 					    code:localStorage.getItem('staffCode'),
 					},function(data){
 						console.log(data.data)
-							if(data.data!='' && data.data != null){
+							if(data.data!='' && data.data != null &&data.data.length>9){
 								vm.list= vm.list.concat(data.data.rows);
 								mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
 							}else{

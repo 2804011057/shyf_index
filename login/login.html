@@ -175,6 +175,7 @@
 								timeout:10000,//超时时间设置为10秒；								              
 								success:function(data){
 									//服务器返回响应，根据响应结果，分析是否登录成功；								
+									console.log(JSON.stringify(data));
 									console.log(data);
 									if(data.data[0]){
 										that.today = data.data[0];
@@ -208,7 +209,7 @@
 										
 										vm.endemicAreaId=localStorage.getItem('id');
 	//									打开首页
-					            		mui.openWindow({
+					            mui.openWindow({
 									         url: '../home.html', 
 									         id:'../home',
 										     extras:{

@@ -37,7 +37,6 @@
 				<span class="mui-icon iconfont icon-jiaojieban"></span>
 				<span class="mui-tab-label">打包</span>
 			</a>
-
 			<a class="mui-tab-item" href="mine/setting.html">
 				<span class="mui-icon iconfont icon-wode"></span>
 				<span class="mui-tab-label">我的</span>
@@ -49,7 +48,7 @@
 		<script src="js/index.js"></script>
 		<script>
 			 //mui初始化
-			mui.init();
+			mui.init();	               
 			var subpages = ['homePage/homePage.html', 'news/news.html', 'pack/pack.html', 'mine/setting.html'];
 			var aniShow = {};		
 			mui.plusReady(function(){
@@ -122,14 +121,14 @@
 					homePage.classList.add('mui-active');
 				}
 			});
-			mui('.mui-bar-tab').on('tap','.transfer',function(e){
-				if(localStorage.getItem('f_type') == '10'){
-					mui.alert('打包人不能使用此功能', '欢迎使用交接功能', function() {
-//							
-					});	
-				}
-				
-			});
+//			mui('.mui-bar-tab').on('tap','.transfer',function(e){
+//				if(localStorage.getItem('f_type') != '10'){
+//					mui.alert('不能使用此功能', '欢迎使用交接功能', function() {
+////							
+//					});	
+//				}
+//				
+//			});
 			mui('.mui-bar-tab').on('tap','.mui-tab-item',function(e){
 				mui.plusReady(function(){ 
 					 if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
