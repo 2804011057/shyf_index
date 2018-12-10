@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+		<style>
+			.list{
+				flex-wrap:wrap 
+			}
+			.list li{
+				padding:0.1rem;				
+				border-radius: 0.2rem;
+			}
+			.list li div{
+				width: 100%;
+				padding: 0.5rem;
+				background-color: #a6d4ff;
+				border-radius: 0.2rem;
+				height: 50px;
+				
+			}
+			.list li div.listActive{
+				color: white;
+			    background-color:#007aff ;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+			    color: white;
+			    border-bottom: none;
+			    background-color:gray ;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item {
+			    color: inherit;
+			    background-color: lightgray;
+			    border-radius: 0.2rem;
+			    margin-left: .5rem;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item:nth-child(1){
+				margin-left: 0;
+			}
+			.mui-content{
+				margin-bottom: 5rem;
+			}
+			.bottom{
+				position: fixed;
+				bottom: 0rem;
+				right: 0;
+				width: 100%;
+				background-color: #efeff4;
+			}
+			.bottom div{
+				width: 6rem;
+				background-color: lightgray;
+				color: white;
+				height: 3rem;
+				
+			}
+			.bottom div.b_active{
+				background-color:#4cd964 ;
+			}
+			/*.bottom div:hover{
+				background-color:red ;
+				box-shadow: 0.1rem 0.1rem 0.1rem red inset;
+			}*/
+			.mui-segmented-control .mui-control-item {
+			    line-height: 38px;
+			}
+			.mui-slider-indicator.mui-segmented-control{
+				height: 3.5rem;
+				margin: 0.5rem;
+				padding: 0.5rem 0;
+				border-bottom: 1px solid grey;
+				border-top:1px solid grey;
+			}
+			.mui-navigate-right span{
+				padding: 0.5rem 1rem;
+				background-color: #007aff;
+				color: #FFFFFF;
+				border-radius: 0.1rem;
+			}
+			.mui-table-view-cell>a:not(.mui-btn) {
+			    background-color: white;
+			}
+			.hidden{
+				display: none;
+			}
+			[v-cloak]{
+				display: none;
+			}
+		</style>
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+	</head>
+	<body>
+		<div class="mui-content">
+			<div class="mui-card">
+				<ul class="mui-table-view ">
+					<li class=" mui-table-view-cell mui-collapse" v-show="isShow">
+						<a class="mui-navigate-right" href="#"><span>{{showName}}</span></a>
+						<ul class="mui-table-view  mui-collapse-content">
+							<ul class="rowf list tc">
+								<li class="col-33 rowf ac M list_li"  v-for='num in data'  track-by="$index" >
+									<div class="rowf ac M">{{num.name}}<span class="hidden">{{num.id}}</span></div>
+								</li>
+							</ul>
+							
+						</ul>
+					</li>
+					<li class=" mui-table-view-cell mui-collapse" v-for='num in data' v-show="!isShow">
+						<a class="mui-navigate-right" href="#"><span>{{num.partitionName}}</span></a>
+						<ul class="mui-table-view  mui-collapse-content">
+							<ul class="rowf list tc">
+								<li class="col-33 rowf ac M list_li" v-for='num_2 in num.name' track-by="$index" >
+									<div class="rowf ac M">{{num_2.split(',')[0]}}<span class="hidden">{{num_2.split(',')[1]}}</span></div>
+								</li>
+							</ul>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="rowf R M bottom">
+				<div class="rowf M ac" id='cancel'>重置</div>
+				<div class="rowf M ac b_active" id='sure'>确定</div>
+				
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-3.0.0.min.js"></script>
+	<script src="../js/vue.js"></script>
+	<script src="../js/index.js"></script>
+	<script>
+		mui.init({
+			swipeBack:true, //启用右滑关闭功能
+			beforeback:function(){
+			    plus.webview.getWebviewById(plus.webview.currentWebview().webViewId).setStyle({mask:"none"});
+
+		    }
+		});
+		var vm = new Vue({
+				el: '.mui-content',
+				data: {
+					fenqu:'',
+					nameceng:'',
+					bingqu:'',
+					data:[],
+					arry:[],
+					arry_new:[],
+					isShow:true,
+					showName:''
+					
+
+				},
+				methods:{
+//					go:function(e){
+//						$(e.target).parent().parent().children().removeClass('listActive');
+//						$(e.target).addClass('listActive');	
+//						vm.bingqu=$(e.target);
+						
+//					}
+				}
+			});
+
+		document.getElementById("sure").addEventListener('tap',function(){
+			console.log(vm.bingqu)
+			$(this).parent().children().removeClass('b_active');
+			$(this).addClass('b_active');
+			plus.webview.currentWebview().close();
+//			alert(plus.webview.currentWebview().webViewId)
+			plus.webview.getWebviewById(plus.webview.currentWebview().webViewId).setStyle({mask:"none"});
+			mui.fire(plus.webview.getWebviewById(plus.webview.currentWebview().webViewId),'showData',{id:vm.bingqu});
+			
+		});
+		document.getElementById("cancel").addEventListener('tap',function(){
+			vm.fenqu='';
+			vm.nameceng='';
+			vm.bingqu='';
+			$('.list li div').each(function(item){
+				$(this).removeClass('listActive');
+			});
+			
+			$(this).parent().children().removeClass('b_active');
+			$(this).addClass('b_active');
+		});
+
+//		mui('.mui-table-view.mui-table-view-chevron').on('tap','.mui-table-view-cell',function(e){
+//			if(!(e.target.innerHTML.indexOf('分区')>-1)){
+//				$(this).removeClass('mui-active')
+//			};			
+//			vm.fenqu=$(this).children('.mui-navigate-right').html();
+//			vm.nameceng=$(this).find('.mui-scroll .mui-active').text();
+//		});
+		mui('.mui-table-view').on('tap','.list_li div',function(e){
+			$('.list li div').each(function(item){
+				$(this).removeClass('listActive');
+			});
+			$(this).addClass('listActive');	
+			vm.bingqu=$(this).find('.hidden').text();
+		});
+		if(localStorage.getItem('code')){
+			vm.isShow=true;
+			mui.post(url_all+'/cloud/shyf/api/np/v1/hospital/queryAreaList.smvc?',{
+			    tenantId:tenantId,
+			    partitionId:localStorage.getItem('code')
+			},function(data){	
+				vm.data=data.data.rows;
+				console.log(vm.data)
+				vm.showName=vm.data[1].partitionName;					
+				},'json'
+			);
+		}else{
+			vm.isShow=false;
+			mui.post(url_all+'/cloud/shyf/api/np/v1/hospital/queryAreaList.smvc?',{
+			    tenantId:tenantId,
+			},function(data){	
+				console.log(data)
+					var partitionName = vm.arry_new;
+					var newpar =vm.arry;
+					var masga = data.data.rows;
+					console.log(masga)
+					masga.forEach(function(item,index){
+						if(partitionName.indexOf(item.partitionName)<0){
+							partitionName.push(item.partitionName)
+						}
+					});
+					console.log(partitionName)
+					partitionName.forEach(function(item,index){
+						var iop={
+							"partitionName":item,
+							"name":[],
+							"partitionId":[]
+						};
+						masga.forEach(function(item2,index2){
+							if(iop.partitionName==item2.partitionName){
+								iop.name.push(item2.name+','+item2.id)
+	//							iop.code.push(item2.code)
+							}
+						})
+						newpar.push(iop);
+						iop={
+							"id":'',
+							"name":[],
+							"partitionId":[]
+						};
+					});
+					vm.data=newpar;
+					console.log(newpar)
+				},'json'
+			);
+		}
+		
+
+			
+	</script>
+</html>

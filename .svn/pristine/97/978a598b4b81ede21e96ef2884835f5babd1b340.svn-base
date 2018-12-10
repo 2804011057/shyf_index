@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+		<link rel="stylesheet" href="../css/LCalendar.css">
+		<style>
+			html{
+				font-size: 10px;
+			}
+			.mui-popover-arrow.mui-bottom{
+				display: none;
+			}
+			input[type=text]{
+				margin-bottom: 0px;
+				line-height: 40px;
+				padding: 0;
+			}
+			input[type=search]{
+				/*margin-bottom: 0px;*/
+				    background-color: #f7f7f7;
+			}
+			.mui-bar-nav{
+			    background-color: #1F79CE;}
+			.mui-title{color:#fff}
+			    a{color:#fff;}
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #FFFFFF;background-color: #00B2EE;}
+			.chart {
+				height: 200px;
+				margin: 0px;
+				padding: 0px;
+			}
+			h5 {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+			h5:first-child {
+				margin-top: 15px;
+			}
+			.homeP_1{
+			    background-color: #e8e8e8;
+			}
+		
+			#demo1{
+			    width: 100%;
+			}
+		
+			.mui-plus .plus{
+				display: inline;
+			}
+		
+			.plus{
+				display: none;
+			}
+			
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+		
+			span.mui-icon {
+				font-size: 2rem;
+				color: #007aff;
+				margin: 0 10px;
+		
+			}
+		
+			.mui-search .mui-placeholder{
+				background-color: white;
+			}
+			.mui-popover .mui-popover-arrow:after{
+				display: none;
+			}
+			.mui-card .mui-control-content {
+				padding: 10px;
+				
+			}
+			.homeP_1top>div{
+				padding:1rem 0.5rem;
+			}
+			input[type=text] {
+			    margin-bottom: 0px;
+			    line-height: 40px;
+			    padding: 0;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<!--导航栏-->
+		<header  id="header" class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">医废日报表</h1>
+		</header>
+		<div class="mui-content" id='content' v-cloak>
+			<div class="Daily_top">
+				<!--选择日期-->
+	            <div class="rowf ar M homeP_1top0">
+	                <div class="col-33  rowf ac L" @click="subtract()">
+	                    <span class=" mui-icon mui-icon-arrowleft subtract"></span>
+	                    <p class="h4 subtract">前一天</p>
+	                </div>
+	                <div class="col-33 rowf ac M">
+	                    <input v-model="input" class="tc " id="demo1" type="text" readonly="readonly" placeholder="日期"  />
+	                </div>
+	                <div class="col-33 rowf ac R " @click="add()">
+	                    <p class="h4 last">后一天</p>          
+	                    <span class=" mui-icon mui-icon-arrowright last"></span>
+	                </div>
+	               
+	            </div>
+			<!--头部数据-->
+	            <div class="rowf ar M tc homeP_1top" style="margin-top: 1rem;" >
+	                <div class="col-33" >
+	                    <p class="h4 from"><span>{{headCont.packNumBag ||0}}</span><span style="font-size:14px;">&nbsp;袋</span></p>
+	                    <p class="h4 from">{{headCont.packWeight>1000?((headCont.packWeight/1000).toFixed(2)||0)+' 吨':((headCont.packWeight)||'0')+' kg'}}</p>
+	                    <p class="h4">产生总量</p>
+	
+	                </div>
+	                <div class="col-33" >
+	                    <p class="h4 from"><span>{{headCont.gatherNumBag ||0}}</span ><span style="font-size:14px;">&nbsp;袋</span></p>
+	                    <p class="h4 from">{{headCont.gatherWeight>1000?((headCont.gatherWeight/1000).toFixed(2)||0)+' 吨':((headCont.gatherWeight)||0)+' kg'}}</p>
+	                    <p class="h4">移交总量</p>
+	                </div>
+	                <div class="col-33" >
+	                    <p class="h4 from"><span>{{headCont.downNumBag ||0}}</span ><span style="font-size:14px;">&nbsp;袋</span></p>
+	                    <p class="h4 from">
+	                    	{{headCont.downWeight>1000?((headCont.downWeight/1000).toFixed(2)||0)+' 吨':((headCont.downWeight)||0)+' kg'}}
+	                    </p>
+	                    <p class="h4">入库总量 </p>
+	                </div>
+	            </div>
+	        <!--切换选项-->
+	            <div >
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a class="mui-control-item mui-active" href="#item1">楼层产量</a>
+						<a class="mui-control-item" href="#item2">收废人工作量</a>
+					</div>
+				</div>
+			</div>
+
+			<div>
+		<!--图表项-->
+			<div id="item1" class="mui-control-content mui-active" >
+						<div class="item1_div">
+							<div class="rowf M top_a">医废产量总报表</div>
+                            <ul class="rowf R M  ">
+                                <li class="span_mid rowf be">
+                                    <p ></p>
+                                    <span>重量&nbsp;(kg)</span>
+                                </li>
+                                <li class="span_mid2 rowf be" >
+                                    <p ></p>
+                                    <span>数量&nbsp;(袋)</span>
+                                </li>
+                            </ul>
+                            <div class="rowf M ac prompt">温馨提示：点击以下科室名称可查看详细信息</div>
+                            <!--<span class="line"></span>-->
+                            <!--<span class="title">医废产量报表</span>-->
+						</div>
+						
+						<div id="scroll" class="mui-scroll-wrapper pic" >
+							<div class="mui-scroll">
+								<!--图表-->                  
+		                    	<div id="container" v-show="noInformation"></div>
+		                    	<div class="noInformation rowf M ac" v-show="!noInformation">暂无信息</div>
+								<div style="height: 500px;"></div>
+							</div>
+						</div>
+				</div>
+		<!--工作列表项-->
+			<div id="item2" class="mui-control-content">
+					<div id="scroll_1" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul class="rowf be tc list_1">
+		                        <li class="col-33"><p class="h4">姓名</p></li>
+		                        <li class="col-33"><p class="h4">接收重量</p></li>
+		                        <li class="col-33"><p class="h4">入库重量</p></li>
+		                    </ul>
+		                    <div class="plc">
+		                        <ul class="rowf be tc list_2" v-for="num in work">
+		                            <li class="col-33"><p class="h4">{{num.name}}</p></li>
+		                            <li class="col-33"><p class="h4">{{num.receive.toFixed(2)}}</p></li>
+		                            <li class="col-33"><p class="h4">{{parseFloat(num.down).toFixed(2)}}</p></li>
+		                        </ul>
+		                       <div style="height: 500px;"></div>
+		                    </div>
+		                    
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../libs/highcharts.js"></script>
+		<script src="../libs/exporting.js"></script>	
+		<script src="../js/LCalendar.js"></script>
+		<script type="text/javascript" src="../js/time.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/index.js"></script>
+		<script>
+			mui.init();
+			mui.plusReady(function(){
+//			    plus.nativeUI.closeWaiting();//这里监听页面是否加载完毕，完成后关闭等待框
+//			    console.log(plus.webview.currentWebview().id);
+//			    document.getElementsByTagName('html')[0].style.fontSize=localStorage.getItem('size')
+			}) 
+//				日期
+			var calendar = new LCalendar();
+	        calendar.init({
+		            'trigger': '#demo1', //标签id
+		            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+		            'minDate': '2017-5-1', //最小日期
+		            'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() //最大日期
+		    });
+
+			$('.last').css("color","#808080");
+		 	var vm = new Vue({
+	                el:'#content',
+	                data:{
+	                	show_n:'false',
+	                	play:'false',
+	                	headCont:'',
+	                	pictureCont:[],
+	          			select:'',
+	                    input:'',
+	                    code:'',
+	                    eName:'',
+	                    selectList:'',
+	                    work:'',
+	                    bingqu:[],
+	                    count:[],
+	                    weight:[],
+	                    noInformation:0,
+	                    height:'',
+	                    letId:[],
+	                    pointId:''
+
+	                    
+	                },
+					methods:{
+//		                	增加天数
+	                	add:function(){
+//		                		this.input=moment(this.input).add(1, 'd').format("YYYY-MM-DD");
+//		                		console.log('rrrrrrrrr');
+	                		if(moment(this.input).isBefore(moment().format("YYYY-MM-DD"))){
+				                this.input=moment(this.input).add(1, 'd').format("YYYY-MM-DD");
+				            }else{
+				                this.input=moment().format("YYYY-MM-DD");
+				                $('.last').css("color","#808080");
+				            };
+				            if((this.input) == moment().format("YYYY-MM-DD")){
+				                $('.last').css("color","#808080");
+				            };
+	               
+	                	},
+//		                	减少天数
+	                	subtract:function(){
+	                		this.input=moment(this.input).subtract(1, 'd').format("YYYY-MM-DD");
+	                		if(moment(this.input).isBefore(moment().format("YYYY-MM-DD"))){
+				                $('.last').css("color","#1F79CE");
+				            }else{
+				                $('.last').css("color","#808080");
+				            };
+	               
+	                	},
+//		                	头部数据获取
+
+	                	head:function(a){
+	                		
+	                		that = this;
+	               		
+					        mui.post(url_all+'/cloud/shyf/api/np/v1/rubbishPackCountAppDay/goToCountDay.smvc?',{
+								date:a,
+								tenantId:tenantId,
+							},function(data){
+								that.show_n = true;								
+								//服务器返回响应，根s据响应结果，分析是否登录成功；
+								that.headCont = data.data[0];
+
+							},'json'
+							);
+	                	},
+//		                	图表数据获取填充
+	                	picture:function(a){
+	                		that = this;
+					        mui.post(url_all+'/cloud/shyf/api/np/v1/GenerateRecordWebController/findBanNum.smvc?',{
+								date:a,
+								tenantId:tenantId
+							},function(data){
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								console.log(JSON.stringify(data.data));
+								vm.letId=data.data;
+				                var newArry_1=[];
+				                var sortBy= function (proper) {
+				                	return function(object1,object2){  
+							            var value1 = object1[proper];  
+							            var value2 = object2[proper];  
+							            return value2 - value1;   
+         							}
+				                };
+				                console.log(data.data,'ttttttt1111111111111111');
+				                newArry_1 = (data.data).sort(sortBy("weight"));
+				                console.log(newArry_1,'ttttttt');
+				                vm.weight = [];
+				                vm.count = [];
+				                vm.bingqu = [];
+				                vm.noInformation=0;
+								for(i=0;i<newArry_1.length;i++){
+				                    if((newArry_1[i]).weight == 0){
+				                        vm.weight.push(null);
+				                    }else{
+				                        vm.weight.push(Number((newArry_1[i]).weight));
+				                    };
+				                    if((newArry_1[i]).numBag == 0){
+				                        vm.count.push(null);
+				                    }else{
+				                        vm.count.push((newArry_1[i]).numBag);
+				                        vm.noInformation+=Number((newArry_1[i]).numBag);
+				                    };
+				                    vm.bingqu.push((newArry_1[i]).partitionName);
+
+				                };
+				                
+				                 //		    撑满全屏
+							    vm.height = ($(window).height()-$('.Daily_top').height()-44);
+								$('.mui-control-content.mui-active').height(vm.height+'px');
+								$('#scroll_1').height(vm.height+'px');
+				                $('#container').height(((that.bingqu.length)*5+5)+'rem')
+				                setTimeout(function(){
+				                	 that.getData('#container',that.bingqu,that.weight,that.count);
+				                },200)
+
+							},'json'
+							);
+	                	},
+//		                	工作列表
+	                	workList:function(a){
+	                		that = this;
+					        mui.post(url_all+'/cloud/shyf/api/np/v1/staffGatherDay/queryList2.smvc?',{
+								date:a,
+								tenantId:tenantId
+							},function(data){
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+//								console.log(data,'9999999999999');
+								that.work = data.data.rows;
+							
+							},'json'
+							);
+	                	},
+
+//						图表
+						getData:function (id,a,b,c) {
+				            Highcharts.setOptions({
+				                colors: ['#1f79ce', ' #ff8635', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+				            });
+			            	jQuery(id).highcharts({
+			                chart: {
+			                    type: 'bar',
+			                    marginTop: 0,
+			                },
+			                title: {
+			                    text: '', align: 'left'
+			                },
+			                xAxis: {
+			                    categories: a,
+			                    min: '',
+			                    title: {
+			                        text: null,
+			                        align: 'low'
+			                    },
+			                    events:{
+			                    	click: function (event) {
+//			                    		alert(event)
+			                    	}
+			                    }
+			                },
+			                yAxis: {
+			                    min: '0',
+			                    title: {
+			                        text: '总量 (kg)',
+			                        align: 'high'
+			                    },
+			                    labels: {
+			                        overflow: 'justify'
+			                    },
+			                    
+			                },
+			                tooltip: {
+			                    // valueSuffix: ' 百万'
+			                },
+			                plotOptions: {
+			                    bar: {
+			                        dataLabels: {
+			                            enabled: true,
+			                            allowOverlap: true
+			                        }
+			                    },
+			                    column: {
+			                        borderWidth: 3,               //柱子边框的大小
+			                        borderColor: "red",
+			                        pointPadding: 200,
+			                        // borderWidth: 1,
+			                        groupPadding:10,
+			
+			//                      pointWidth:10,
+			                        shadow: false,
+			                    },
+//			                    进入详情
+			                    series: {
+						            cursor: 'pointer',
+						            events: {
+						                click: function (event) {
+//		
+						                	for(x in vm.letId){
+						                
+						                		if(vm.letId[x].partitionName==event.point.category){
+						                			vm.pointId = vm.letId[x].partitionId;
+						                			console.log(vm.pointId)
+						                		}
+						                	}
+//						                	
+						                	mui.openWindow({
+										         url: 'Daily_next.html', 
+										         id:'Daily_next.html',
+										         extras:{
+								               		eName:event.point.category,
+								                    code:vm.pointId,
+								                  	pretime:that.input
+								               	},
+										         show:{
+										            aniShow:'slide-in-right',
+										            duration:300
+										          },
+										         waiting:{
+										          autoShow:false
+										         }
+										    });
+						                }
+						            }
+						        }
+			
+			                },
+			                 legend: {
+			                    layout: 'vertical',
+			                    align: 'right',
+			                    verticalAlign: 'top',
+			                    x: -40,
+			                    y: 100,
+			                    floating: true,
+			                    borderWidth: 1,
+			                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+			                    shadow: true
+			                },
+			                credits: {
+			                    enabled: false
+			                },
+			                exporting:{
+			                    enabled: false
+			                },
+			                
+			                series: [{
+			                    name:'重量',
+			                    data: b,
+			                    pointPadding:0,
+			                    groupPadding:0
+			                },{name:'数量',
+			                    data: c,
+			                    pointPadding:0,
+			                    groupPadding:0.
+			                }
+			                ]
+			            });
+			        }
+	                },
+	                watch:{
+		                	input:{
+		                		handler:function(){
+		                			this.head(this.input);
+		                			this.picture(this.input);
+		                			this.workList(this.input);
+		                			if((this.input) == moment().format("YYYY-MM-DD")){
+					                	$('.last').css("color","#808080");
+						            }else{
+						            	$('.last').css("color","#1F79CE");
+						            };
+		                		}
+		                	}
+		            }
+				})
+//				获取当天时间
+		    vm.input = moment().format("YYYY-MM-DD");
+
+//				获取科室数据
+			function list(){
+				mui.post(url_all+'/cloud/shyf/api/np/v1/GenerateRecordWebController/findBan.smvc',{								
+					},function(data){
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+//						弹出框,选择列表项
+						vm.selectList = data.data;
+						console.log(vm.selectList,'7777777777')
+					},'json'
+					);
+			};
+			list();
+			//	滚动区域
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+				$('#scroll_1').scroll({
+					indicators: true //是否显示滚动条
+				});
+				$('#scroll_2').scroll({
+					indicators: true //是否显示滚动条
+				});
+				var segmentedControl = document.getElementById('segmentedControl');
+				$('.mui-input-group').on('change', 'input', function() {
+					if (this.checked) {
+						var styleEl = document.querySelector('input[name="style"]:checked');
+						var colorEl = document.querySelector('input[name="color"]:checked');
+						if (styleEl && colorEl) {
+							var style = styleEl.value;
+							var color = colorEl.value;
+							segmentedControl.className = 'mui-segmented-control' + (style ? (' mui-segmented-control-' + style) : '') + ' mui-segmented-control-' + color;
+						}
+					}
+				});
+			})(mui);
+//			点击进入详情
+			$('#container').on('tap',function(e){
+//				console.log(e.target.innerHTML);
+				if(e.target.innerHTML){
+					for(x in vm.letId){	
+//						console.log(e.target.innerHTML);
+	            		if(vm.letId[x].partitionName==e.target.innerHTML){
+	            			vm.pointId = vm.letId[x].partitionId;
+	            			console.log(vm.pointId)
+	            		}
+	            	}
+//					mui.openWindow({
+//				         url: 'Daily_next.html', 
+//				         id:'Daily_next.html',
+//				         extras:{
+//		               		eName:e.target.innerHTML,
+//		                    code:vm.pointId,
+//		                  	pretime:that.input
+//		               	},
+//				         show:{
+//				            aniShow:'slide-in-right',
+//				            duration:300
+//				          },
+//				         waiting:{
+//				          autoShow:false
+//				         }
+//				    });
+				}
+			})
+
+			
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+		<link rel="stylesheet" href="../css/LCalendar.css">
+		<style>
+			html{
+				font-size: 10px;
+			}
+			.mui-popover-arrow.mui-bottom{
+				display: none;
+			}
+			input[type=text]{
+				margin-bottom: 0px;
+				line-height: 40px;
+				padding: 0;
+			}
+			input[type=search]{
+				background-color: #f7f7f7;
+			}
+			.mui-bar-nav{
+			    background-color: #1F79CE;}
+			.mui-title{color:#fff}
+			    a{color:#fff;}
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #FFFFFF;background-color: #00B2EE;}
+			h5 {
+				margin-top: 10px;
+				font-weight: bold;
+			}
+			h5:first-child {
+				margin-top: 15px;
+			}
+		
+			#demo1{
+			    width: 100%;
+			}
+				
+			span.mui-icon {
+				font-size: 2rem;
+				color: #007aff;
+				margin: 0 10px;
+		
+			}
+		
+			.mui-search .mui-placeholder{
+				background-color: white;
+			}
+			.mui-popover .mui-popover-arrow:after{
+				display: none;
+			}
+
+			/* .homeP_1top>div{
+				padding:1rem 0.5rem;
+			} */
+			input[type=text] {
+			    margin-bottom: 0px;
+			    line-height: 40px;
+			    padding: 0;
+			}
+			.Daily_top{
+				position:fixed;
+				width: 100%;
+				top:44px;
+				z-index: 9			
+			}
+			.mui-table-cell span.mui-icon{
+				font-size: 3rem;
+			}
+			.homeP_1top0 {
+					border-bottom: 1px solid #c8c7cc;
+			}
+			.mui-table-view{
+				margin-top: 6.1rem;
+			}
+			.hidden{
+				display: none;
+			}
+			.mui-bar .mui-title{
+				text-align: center;
+			}
+				
+		</style>
+	</head>
+
+	<body>
+		<!--导航栏-->
+		<header  id="header" class="mui-bar mui-bar-nav">
+		    <!-- <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+		    <h1 class="mui-title">查询</h1>
+		</header>
+		<div class="mui-content" id='content' v-cloak>
+			<div class="Daily_top">
+				<!--选择日期-->
+	            <div class="rowf ar M homeP_1top0">
+	                <div class="col-33  rowf ac L" @click="subtract()">
+	                    <span class=" mui-icon mui-icon-arrowleft subtract"></span>
+	                    <p class="h4 subtract">前一天</p>
+	                </div>
+	                <div class="col-33 rowf ac M">
+	                    <input v-model="input" class="tc " id="demo1" type="text" readonly="readonly" placeholder="日期"  />
+	                </div>
+	                <div class="col-33 rowf ac R " @click="add()">
+	                    <p class="h4 last">后一天</p>          
+	                    <span class=" mui-icon mui-icon-arrowright last"></span>
+	                </div>               
+	            </div>	
+			</div>
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+		        <li class="mui-table-view-cell deleteIcon" v-for='num in Date' >
+							<!-- @click="deleteIcon($event)" -->
+		            <div class="mui-table">
+		                <div class="mui-table-cell mui-col-xs-10">
+		                    <h4 class="mui-ellipsis">医废编号：{{num.barCode}}</h4>
+		                    <h5>条码编号：{{num.code}}</h5>
+												<h5>重量：{{num.weight}}</h5>
+												<h5>类型：{{num.type}}</h5>
+												<h5>时间：{{num.tiem}}</h5>
+												<h5>状态：{{num.f_pack_status|change}}</h5>
+												<h5 class="hidden">{{num.id}}</h5>
+		                </div>
+		                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+		                    <span class="mui-icon mui-icon-trash" ></span>
+		                </div>
+		            </div>
+		        </li>
+		    </ul>
+		</div>
+		
+		<script src="../js/mui.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../libs/highcharts.js"></script>
+		<script src="../libs/exporting.js"></script>	
+		<script src="../js/LCalendar.js"></script>
+		<script type="text/javascript" src="../js/time.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/index.js"></script>
+		<script>
+			mui.init();		
+//				日期
+			var calendar = new LCalendar();
+	        calendar.init({
+		            'trigger': '#demo1', //标签id
+		            'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+		            'minDate': '2017-5-1', //最小日期
+		            'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() //最大日期
+		    });
+			$('.last').css("color","#808080");
+		 	var vm = new Vue({
+	                el:'#content',
+	                data:{
+	                	 input:'',
+										 Date:[]
+	                },
+					methods:{
+//		                	增加天数
+	                	add:function(){
+	                		if(moment(this.input).isBefore(moment().format("YYYY-MM-DD"))){
+				                this.input=moment(this.input).add(1, 'd').format("YYYY-MM-DD");
+				            }else{
+				                this.input=moment().format("YYYY-MM-DD");
+				                $('.last').css("color","#808080");
+				            };
+				            if((this.input) == moment().format("YYYY-MM-DD")){
+				                $('.last').css("color","#808080");
+				            };
+	               
+	                	},
+//		                	减少天数
+	                	subtract:function(){
+	                		this.input=moment(this.input).subtract(1, 'd').format("YYYY-MM-DD");
+	                		if(moment(this.input).isBefore(moment().format("YYYY-MM-DD"))){
+				                $('.last').css("color","#1F79CE");
+				            }else{
+				                $('.last').css("color","#808080");
+				            };
+	               
+	                	},
+										head:function(){
+											that = this;
+											console.log(url_all+'/cloud/shyf/api/np/v1/package/getStaff.smvc?staffCode='+localStorage.getItem('personId')+'&date'+that.input)
+											mui.post(url_all+'/cloud/shyf/api/np/v1/package/getStaff.smvc?',{
+													staffCode:localStorage.getItem('personId'),
+													// staffCode:"05f01b6787d94f9d9bc1338dc72e58d9",
+													date:that.input
+												},function(data){
+													that.Date = data.data;
+												},'json'
+											);
+										},
+										deleteIcon:function(e){
+											that = this;												
+											if($(e.target).attr('class').indexOf('mui-icon-trash')>-1){
+// 												$('.delete').map(function(item){
+// 													$(item).removeClass('delete')
+// 												})
+												$(e.currentTarget).addClass('delete');
+												mui.post(url_all+'/cloud/shyf/api/np/v1/package/delete.smvc?',{
+														ids:$(e.currentTarget).find('.hidden').text(),
+													},function(data){
+														if(data.result == 0){
+															mui.toast(data.msg)
+															$('.delete').remove()
+														}else{
+															mui.toast(data.msg)
+															
+														}
+														//服务器返回响应，根据响应结果，分析是否登录成功；
+														
+													},'json'
+												);
+												
+											}
+											
+											
+										}
+									},
+									filters: {
+										change: function (value) {
+											switch(value){
+												case 10:
+												return '已打包';
+												break;
+												case 30:
+												return '已交接';
+												break;
+												case 40:
+												return '已入库';
+												break;
+												case 50:
+												return '已出库';
+												break;
+											}
+										}
+									},
+										watch:{
+												input:{
+													handler:function(){
+														this.head();
+														if((this.input) == moment().format("YYYY-MM-DD")){
+																$('.last').css("color","#808080");
+														}else{
+															$('.last').css("color","#1F79CE");
+														};
+													}
+												}
+									}
+						
+				})
+				$('.mui-table-view').on('tap','.deleteIcon',function(e){
+						if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+							plus.nativeUI.toast("当前网络异常，请检查后重试");
+							return;
+						}
+					if($(e.target).attr('class').indexOf('mui-icon-trash')>-1){
+						$('.delete').map(function(item){
+							$(item).removeClass('delete')
+						})
+						$(e.currentTarget).addClass('delete');
+						mui.post(url_all+'/cloud/shyf/api/np/v1/package/delete.smvc?',{
+								ids:$(e.currentTarget).find('.hidden').text(),
+							},function(data){
+								if(data.result == 0){
+									mui.toast(data.msg)
+									$('.delete').empty();
+									$('.delete').css('display','none')
+								}else{
+									mui.toast(data.msg)
+									
+								}
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								
+							},'json'
+						);
+						
+					}
+				})
+//				获取当天时间
+		    vm.input = moment().format("YYYY-MM-DD");
+				// vm.head(vm.input)
+				// $('.mui-table-view').css('marginTop',$('.Daily_top').outerHeight()+'px')
+		</script>
+	</body>
+
+</html>

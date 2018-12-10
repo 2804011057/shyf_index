@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/index.css" rel="stylesheet" />
+		<style>
+			html{
+				font-size: 10px;
+			}
+			.mui-bar-nav {
+			    background-color: #1F79CE;
+			}
+			#header .mui-title {
+			    color: #fff;
+			    text-align: center;
+			}
+			.mui-content ul{
+				padding: 2rem;
+				font-size: 1.6rem;
+				font-family: 微软雅黑;
+			}
+			.mui-content ul li{
+				margin: 2rem 1rem;
+			}
+			.rowf {
+			    flex-flow: -webkit-wrap;
+			    flex-flow: wrap;
+			}
+			.col-33{
+				padding:1rem  0.5rem 1rem 0
+			}
+			.col-33 div{
+				background-color: white;
+				border:1px solid lightgray ;				
+				text-align: center;
+				font-size: 1.3rem;
+    			padding: 1rem 0.5rem;
+			}
+			img{
+				width: 2rem;
+			}
+			.kind .col-33{
+				position: relative;
+			}
+			.kind img{
+				position: absolute;
+				bottom: 1rem;
+    			left: 1rem;
+				width: 2rem;
+				display: none;
+			}
+			.weight{
+				line-height: 40px;
+			}
+			.hidden{
+				display: none;
+			}
+			.mui-btn-block{
+				margin-top: 3rem;
+			}
+			.col-20.weight{
+				text-align: right;
+				padding-right: 0.5rem;
+			}
+			.mui-btn.mui-pull-right{
+				top: 5px;
+			}
+			.col-50{
+				word-break:break-all
+		</style>
+	</head>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">打包</h1>
+			<button class="mui-btn mui-btn-green mui-pull-right" disabled>打印</button>
+		</header>
+		<div class="mui-content" >
+		    <ul>
+		    	<li class="rowf">
+		    		<div class="col-40">扎带二维码:</div>
+		    		<div class="col-50">{{barCode}}</div>
+		    		<div class="col-10" @click="scan">
+		    			<img src="../images/scan_bag.jpg"/>
+		    		</div>
+		    	</li>
+		    	<li class="rowf">
+		    		<div class="col-40">医废来源:</div>
+		    		<div class="col-60">{{from}}</div>
+		    	</li>
+		    	<li class="rowf">
+		    		<div class="col-30">医废类型:</div>
+		    	</li>
+		    	<li class="rowf kind " >
+					<div class="col-33" v-for="num in kind" track-by="$index">
+						<div>{{num.name}}</div>
+						<div class="hidden">{{num.id}}</div>
+						<img class='select' src="../images/true.png" alt="" />
+					</div>
+		   		
+		    	</li>
+		    	<li class="rowf">
+		    		<div class="col-40 weight">医废重量:</div>
+		    		<div class="col-40">
+		    			<input type="number"  v-model="input_value" value="0" placeholder="请输入" / >
+		    		</div>
+		    		<div class="col-20 weight">KG</div>
+		    	</li>
+		    	<li>
+		    		<button @click='submit'   type="button" class="mui-btn mui-btn-warning mui-btn-block " disabled='{{barCode.length==0}}'>
+						提交 
+					</button>
+		    	</li>
+		    </ul>
+		</div>
+	<body>
+		<script src="../js/index.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init({
+	            preloadPages: [{
+	                url: 'scan.html',
+	                id: 'scan.html'
+	            }]
+	        });
+			var vm = new Vue({
+               el:'.mui-content',
+                data:{
+                	barCode:'请点击扫描图标',
+                	from:'',
+                	staffCode:localStorage.getItem('staffCode'),
+                	kind:[],
+                	kingText:'',
+                	typeId:'',
+                	input_value:'',
+                	endemicAreaId:localStorage.getItem('id')                	
+                	},
+                methods:{
+                	wasteType:function(){
+                		that=this;
+                		mui.post(url_all+'/cloud/shyf/api/np/v1/rubbishType/queryList.smvc?',{
+												tenantId:tenantId
+											},function(data){								
+												that.kind=data.data;
+												console.log(that.kind);
+											},'json'
+										);
+                	},
+                	scan:function(){
+											
+                			mui.openWindow({
+													 url: 'scan.html', 
+													 id:'scan.html',
+													 show:{
+															aniShow:'slide-in-right',
+															duration:300
+														},
+													 waiting:{
+														autoShow:false
+													 }
+											});
+                		               		
+                		
+                	},
+                	submit:function(){
+                		that = this;
+						if((that.barCode != '' &&that.barCode != '请点击扫描图标')&&(that.from != '')&&(that.typeId!='')){
+									mui.ajax(url_all+"/cloud/shyf/api/np/v1/package/savePackageInfoAPP.smvc?",{
+											data:{
+												staffCode:that.staffCode,
+												barCode:that.barCode,								
+												typeId:that.typeId,
+												weight:that.input_value,
+												tenantId:tenantId,
+												endemicAreaId:that.endemicAreaId
+											},
+											dataType:'json',//服务器返回json格式数据
+											type:'post',//HTTP请求类型
+											timeout:10000,//超时时间设置为10秒；								              
+											success:function(data){
+												console.log(JSON.stringify(data.data))
+												// that.Next_title = 
+												localStorage.setItem('Next_title',data.data.endemicArea.partitionId.name);
+												localStorage.setItem('Next_code',data.data.code);
+												localStorage.setItem('Next_from',data.data.endemicArea.name);
+												localStorage.setItem('Next_kind',data.data.type.name);
+												localStorage.setItem('Next_time',data.data.packTime);
+												localStorage.setItem('Next_pack',data.data.staff.name);
+												if(data.result == '0'){
+													that.barCode = '';          			
+													that.typeId = '';
+													that.input_value = '';
+													$('.select').each(function(){
+														$(this).css('display','none');
+													});
+													mui.toast('打包成功');
+												}else{
+													mui.toast(data.msg);
+												}
+													
+											},
+											error:function(){
+												mui.toast('打包失败');	
+											}
+									});	
+									
+                		}else{
+                			mui.toast('请核对需要提交的内容')
+                		}
+                		
+                		
+                	},
+				 }
+    		});
+    		if(localStorage.getItem('starffRoom')!='null'){
+    			vm.from=localStorage.getItem('starffRoom')
+    		}
+    		vm.wasteType();
+    		function scaned(t, r, f){
+					$('.mui-pull-right').attr("disabled",false);
+				//			扫描						
+				$.get(url_all+"/cloud/shyf/api/np/v1/package/queryRubbishPackAPP.smvc?",
+					{ barCode:r
+					},
+					function(data){
+						console.log(JSON.stringify(data.data))
+						if(data.data!=null){
+							switch (data.data.status){
+								case 10:
+								plus.nativeUI.toast('已打包');
+								break;
+								case 30:
+								plus.nativeUI.toast('已交接');
+								break;
+								case 40:
+								plus.nativeUI.toast('已入库');
+								break;
+								case 50:
+								plus.nativeUI.toast('已出库');
+								break;
+								default:
+								// plus.nativeUI.toast(data.data.YfRubbishStatus);
+							}	
+							vm.barCode = ''
+						}else{
+							vm.barCode = r;
+						}
+					}
+				);
+				
+			}
+    		$('.kind').on('tap','.col-33',function(){
+    			$('.select').each(function(){
+    				$(this).css('display','none');
+    			});
+    			$(this).find('img').css('display','block');
+    			vm.typeId=$(this).find('.hidden').text();
+    			// console.log(vm.typeId)
+    		});
+				//	       	进入打印
+				$('.mui-pull-right').on('tap',function(){
+					mui.openWindow({
+								 url: 'pack_1.html', 
+								 id:'pack_1',
+								 extras:{
+								 	},
+								 show:{
+										aniShow:'slide-in-right',
+										duration:300
+									},
+								 waiting:{
+									autoShow:false
+								 }
+						});
+				});
+
+		</script>
+	</body>
+
+</html>

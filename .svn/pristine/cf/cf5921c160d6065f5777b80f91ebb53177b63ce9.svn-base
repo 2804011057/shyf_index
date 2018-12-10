@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/index.css"/>
+        <style>
+        	html{ font-size: 10px;}
+			.more {
+			    padding: 1rem 0;
+			}
+			.more div:nth-child(2) {
+			    color: #00a0ff;
+			    padding: 0 1rem;
+			}
+
+			.mid_p{
+			    color: gray;
+			    margin: .5rem 0;
+			    /*letter-spacing: 0.2rem;*/
+			   font-family: "微软雅黑";
+			   color: #808080;
+			   font-weight:500;
+			   font-size: 1.4rem;
+			}
+			.col.topic{
+			    margin-top: 1rem;
+			
+			}
+			.col.topic:nth-child(1),.col.topic:nth-child(2),.col.topic:nth-child(3){
+			    border-bottom: .1rem #e8e8e8 solid;
+			}
+			.homePage{
+			    background-color: #e8e8e8;
+			}
+			.bar{
+			    height: 4.8rem;
+			}
+			.homeTop {
+			    position: relative;
+			    background: url("../images/bg.png");
+			    height: 12rem;
+			    background-size: 100% 100%;
+			    /*width: 100%;*/
+			}
+			.homeM{
+			    padding:.7rem .5rem;
+			    background: url("../images/ss.png") no-repeat;
+			    background-size: 18% 100%;
+			    /*background-position: ;*/
+			    margin: 1rem 0;
+			    border-top: .1rem #FFFFFF solid;
+			    border-bottom: .1rem #FFFFFF solid;
+			}
+			.topic img{
+			    width: 2.5rem;
+			}
+			.homeTop img{
+			    width:5rem;
+			}
+			.homeTop p{
+			    color: white;
+			    position: absolute;
+			    font-size: 1.4rem;
+			    right: 2rem;
+			    bottom:0.5rem ;
+			}
+			.homeTop span {
+			    /*margin-left: 1rem;*/
+			    color: white;
+			    font-weight:bold;   
+			}
+			.mui-table-view-cell>a:not(.mui-btn) {
+			    position: relative;
+			    display: block;
+			    overflow: hidden;
+			    margin: -11px -15px;
+			    padding: 11px 23px;
+			    white-space: nowrap;
+			    text-overflow: ellipsis;
+			    color: inherit;
+			}
+			.mui-table-view .mui-media-object.mui-pull-left {
+			    margin-right: 10px;
+			    margin-top: 1.3rem;
+			}
+			.mui-table-view{
+				background-color: #efeff4;
+				border-bottom: none;
+			}
+			.mui-table-view:after{
+				background-color: #efeff4; 
+			}
+			.mui-table-view li{
+				background-color: white;
+			}
+			.mui-badge.mui-badge-primary{
+				position: absolute;
+				bottom:1rem;
+				right: 0.5rem;
+				
+			}
+			@media only screen and (max-width:320px ) {
+				.homeTop span { font-size: 21px;}
+			}
+			@media only screen and (min-width:321px ) and (max-width:360px ) {
+				.homeTop span { font-size:25px;}
+			}
+			@media only screen and (min-width:361px ) and (max-width:375px ) {
+				.homeTop span { font-size: 26px;}
+			}
+			@media only screen and (min-width:376px ) and (max-width:415px ) {
+				.homeTop span { font-size:30px;}
+			}
+			@media only screen and (min-width:416px ) {
+				.homeTop span { font-size:31px;}
+			}
+			.info_hidden{
+				display: none;
+			}
+			.noInformation{
+				color: lightgray;
+				font-size: 2rem;
+				height: 3rem;
+			}
+		</style>
+	</head>
+	<body>
+	<div class="mui-content" id='content' v-cloak>
+		<div class="homePage_top">
+			<!--头部-->
+
+		        <div class="homeTop rowf L ac">
+		           <div style="width:94%;margin: 0 auto;" class="rowf L ac">
+		           	 <img id='push' src="../images/logo2.png" alt="" style="vertical-align: middle;">
+		                <span >医废院内追溯管理系统</span>
+		            <p>工号：{{number}}</p>
+		           </div>
+		        </div>
+<!--中部选项-->
+
+		        <div class="rowf wrap white" style="padding: 0 1.3rem">
+		            <div id="Daily" class="col col-33 tc topic">
+		                <img  src="../images/yfri.png.png" alt="">
+		                <p class="mid_p">医废日报表</p>
+		            </div>
+		            <div id="Monthly" class="col col-33 tc topic">
+		                <img src="../images/yfyue.png.png" alt="">
+		                <p class="mid_p">医废月报表</p>
+		            </div>
+		            <div id="alarm"  class="col col-33 tc topic">
+		                <img src="../images/bjjl.png.png" alt="">
+		                <p class="mid_p">报警记录</p>
+		            </div>
+		            <div id="tracing" class="col col-33 tc topic">
+		                <img src="../images/yfzs.png.png" alt="">
+		                <p class="mid_p">医废追溯</p>
+		            </div>
+		            <div  id="remind" class="col col-33 tc topic">
+		                <img src="../images/sftx.png.png" alt="">
+		                <p class="mid_p">收废提醒</p>
+		            </div>
+		            <div id="monitoring" class="col col-33 tc topic">
+		                <img src="../images/csjl.png.png" alt="">
+		                <p class="mid_p">楼层监控</p>
+		            </div>
+		        </div>
+
+<!--实时-->
+		        <div style="background-color: #fff;">
+		            <div class="homeM rowf be ac"  @click='relTime()'>
+		                <h4 style="color:#fff;font-weight:500;font-size:2rem;font-family: '微软雅黑';">实时</h4>
+		                <p class="h4">{{today.endemicArea}}<span v-show ='today.endemicArea'>,需要收废。</span></h4>
+		                <p v-show ='today.endemicArea' class="h4" style="color: grey">{{today.createAlarmTime.split(' ')[1]}}</h5>
+		            </div>
+		        </div>
+<!--要闻通知-->
+	            <div class="rowf be ac more white" style="border-bottom:1px solid #ccc;">
+		            <div class=" rowf ac">
+		                <img src="../images/news.png" alt="" style="margin: 0 1.1rem 0 1.4rem;width: 3.7rem">
+		                <strong style="font-size:1.6rem" id='more'>要闻通知</strong>
+		            </div>
+		            <div @click = 'more()'>查看更多</div>
+		        </div>
+
+		</div>
+
+<!--列表项-->
+		        <ul class="mui-table-view" style="overflow: hidden;" v-show='inform'>	
+					<li class="mui-table-view-cell mui-media" v-for = 'num2 in inform'  @click="list_go($index,$event)">
+
+						<a href="javascript:;">
+							<img style="width: 2rem;height: 1.7rem;" class="mui-media-object mui-pull-left" src="../images/tz.png.png">
+							<div class="mui-media-body">
+								<p style="margin-left:0.6rem;font-family: '微软雅黑';color: #333;font-weight: 500;">{{num2.title}}</p>
+			                    <p class='mui-ellipsis' style="text-indent:.5rem;color: #909090;">
+			                        <span>{{num2.msgStatus}}</span>
+			                        <span class="mal15">{{num2.msgDate.split(' ')[0]}}</span>
+			                        <span class="mal15">{{num2.msgDate.split(' ')[1]}}</span>
+			                   </p>	
+			                   <p class="info_hidden">{{num2.id}}</p>
+			                   <img v-show="(num2.readingState === '未读')" class='read' src="../images/read.jpg" alt="" />
+							</div>
+						</a>
+					</li>
+
+				</ul>
+				<div class="noInformation rowf M ac" v-show="!inform">
+					暂无通知
+				</div>
+	</div>
+
+		<script src="../js/index.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../js/vue.js"></script>
+		
+		<script src="../js/LCalendar.js"></script>
+		<script type="text/javascript" src="../js/time.js"></script>
+		
+<script>
+				mui.plusReady(function(){
+				})
+				mui.init({
+					preloadPages:[
+					    {url:'Daily.html',id:'Daily',styles:{}},
+					    {url:'Monthly.html',id:'Monthly',styles:{}}
+					],
+					
+				});
+				
+
+				var vm = new Vue({
+		               el:'#content',
+		                data:{
+		                	realTime:[],
+		                	inform:[],
+		                	height:'',
+		                	id:[],
+		                	code:'',
+		                	number:'',
+		                	today:[],
+		                	today_time:'',
+		                	list_time:'',
+		                	role:'',
+		                	localstore:[],
+		                	status:[],
+		                	statusEnd:[],
+		                	websocket:''
+
+		                },
+		                methods:{
+		                	list:function(){
+		                		that = this;
+		                		mui.post(url_all+'/cloud/shyf/api/np/v1/jkrubbishMessageRelease/queryList.smvc?&status=0&rows=10&page=1',{
+						        	tenantId:tenantId,
+						        	code:localStorage.getItem('staffCode'),
+								},function(data){									
+//          						that.inform = data.data.rows;
+									if(data.data == null){
+										that.inform = '';
+									}else{
+										that.inform = data.data.rows;
+									}
+								},'json'
+								);
+
+		                	},
+		                	list_go:function(index,e){
+		                		that =this;
+		                		that.code = $(e.currentTarget).find('.info_hidden').text();
+		                		$(e.currentTarget).find('.read').css('display','none');
+		                		mui.post(url_all+'/cloud/shyf/api/np/v1/jkrubbishMessageRelease/update.smvc?',{
+						        	code:localStorage.getItem('staffCode'),
+						        	id:that.code
+								},function(data){
+//										alert(data.msg)
+								},'json'
+								);
+		                		mui.openWindow({
+							         url: 'noticeC.html', 
+							         id:'noticeC.html',
+							         
+							         extras:{
+					                    code:that.code,
+					               },
+							         show:{
+							            aniShow:'slide-in-right',
+							            duration:300
+							          },
+							         waiting:{
+							          autoShow:false
+							         }
+							    });
+		                	},
+		                	relTime:function(){
+		                		mui.openWindow({
+							         url: 'alarm.html', 
+							         id:'alarm.html',
+							         show:{
+							            aniShow:'slide-in-right',
+							            duration:300
+							          },
+							         waiting:{
+							          autoShow:false
+							         }
+							    });
+				
+		                	},
+		                	more:function(){
+		                		mui.openWindow({
+							         url: 'notice_list.html', 
+							         id:'notice_list.html',
+							         show:{
+							            aniShow:'slide-in-right',
+							            duration:300
+							          },
+							         waiting:{
+							          autoShow:false
+							         }
+							    });
+		                	},
+		                	todayList:function(a){
+		                		that = this;
+		                		mui.post(url_all+'/cloud/shyf/api/np/v1/AlarmRecordMessageController/queryList.smvc?phoneAppStatus=1',{									
+								},function(data){
+            						that.today=data.data.rows[0];
+						            that.today_time=that.today.createAlarmTime.split(';')[1];
+								},'json'
+								);
+
+		                	},
+
+		                }  
+		       });
+		       vm.list();
+		       vm.todayList();
+					//刷新消息
+				window.addEventListener('refresh', function(e) { 
+			        location.reload();  
+			    })  
+		        //过滤器
+				Vue.filter('split', function(value) {
+				  if (!value) { return ''}
+				  return value.createAlarmTime.split(' ')[1]
+				})
+		        
+		        vm.number = localStorage.getItem('staffCode');
+		        
+		        vm.height = $(window).height()-$('.homePage_top').height()-5;
+		        $('.mui-table-view').height(vm.height+'px')
+		        console.log(vm.height);
+				
+				document.getElementById('Daily').addEventListener('tap', function() {
+					if(localStorage.getItem('code')){
+						mui.openWindow({
+					         url: 'Daily_next.html', 
+					         id:'Daily_next.html',
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					          extras:{
+			               		eName:localStorage.getItem('eName'),
+			                    code:localStorage.getItem('code'),
+			                  	pretime:moment().format("YYYY-MM-DD")
+			               	},
+					         waiting:{
+					          autoShow:false,
+					          
+					         }
+					    });
+					}else{
+						mui.openWindow({
+					         url: 'Daily.html', 
+					         id:'Daily.html',
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					         waiting:{
+					          autoShow:false,
+					          
+					         }
+					    });
+					}
+					
+//					
+				     
+//				    mask.close();
+				});	
+			 	document.getElementById('Monthly').addEventListener('tap', function() {
+			 		if(localStorage.getItem('code')){
+//			 			console.log(localStorage.getItem('eName'))
+//			 			console.log(localStorage.getItem('eName'))
+//			 			console.log(localStorage.getItem('eName'))
+			 			mui.openWindow({
+					         url: 'Monthly_next.html', 
+					         id:'Monthly_next.html',
+					         extras:{
+			               		eName:localStorage.getItem('eName'),
+			                    code:localStorage.getItem('code'),
+			                  	pretime:moment().format("YYYY-MM")
+			               	},
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					         waiting:{
+					          autoShow:false
+					         }
+					    });
+			 		}else{
+			 			mui.openWindow({
+					         url: 'Monthly.html', 
+					         id:'Monthly.html',
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					         waiting:{
+					          autoShow:false
+					         }
+					    });
+			 		}
+					     
+				});	
+				document.getElementById('alarm').addEventListener('tap', function() {
+					mui.openWindow({
+				         url: 'alarm.html', 
+				         id:'alarm.html',
+				         show:{
+				            aniShow:'slide-in-right',
+				            duration:300
+				          },
+				         waiting:{
+				          autoShow:false
+				         }
+				    });
+
+				     
+				});	
+				document.getElementById('tracing').addEventListener('tap', function() {
+					mui.openWindow({
+				         url: 'tracing.html', 
+				         id:'tracing.html',
+				         show:{
+				            aniShow:'slide-in-right',
+				            duration:300
+				          },
+				         waiting:{
+				          autoShow:false
+				         }
+				    });
+
+				    
+				});	
+				document.getElementById('remind').addEventListener('tap', function() {
+				     mui.openWindow({
+				         url: 'remind.html', 
+				         id:'remind.html',
+				         show:{
+				            aniShow:'slide-in-right',
+				            duration:300
+				          },
+				         waiting:{
+				          autoShow:false
+				         }
+				    });
+				});	
+				document.getElementById('monitoring').addEventListener('tap', function() {
+					mui.openWindow({
+				         url: 'monitoring.html', 
+				         id:'monitoring.html',
+				         extras:{
+		               		eName:localStorage.getItem('eName'),
+		                    code:localStorage.getItem('code'),
+		                  	pretime:moment().format("YYYY-MM-DD")
+		               	},
+				         show:{
+				            aniShow:'slide-in-right',
+				            duration:300
+				          },
+				         waiting:{
+				          autoShow:false
+				         }
+				    });
+				   
+				     
+				    
+				});
+				document.getElementById('content').addEventListener('tap', function() {
+					mui.plusReady(function(){ 
+						 if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_UNKNOW || plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+							plus.nativeUI.toast("当前网络异常，请检查后重试");
+							return;
+						};
+//						alert('eee')
+					});	
+				   
+				});	
+
+		
+		//		物理键返回
+				var first = null;
+				mui.back = function() {
+					if (!first) {
+						first = new Date().getTime();
+						plus.nativeUI.toast("再按一次退出应用");
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+
+							plus.runtime.quit();
+							
+						}
+					}
+				}
+	
+		</script>
+	</body>
+</html>

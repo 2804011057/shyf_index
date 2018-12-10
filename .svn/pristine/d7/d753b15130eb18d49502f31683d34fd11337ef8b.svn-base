@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/index.css" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style type="text/css">
+			.mui-content>.mui-table-view:first-child {
+				margin-top: -1px;
+			}
+			html{
+				font-size: 10px;
+			}
+			.mui-bar-nav{
+			        background-color: #1F79CE;
+			        z-index: 999;}
+			.mui-title{color:#fff}
+			    a{color:#fff;}
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #FFFFFF;background-color: #00B2EE;
+				}
+				.run .back{
+			    margin: 1rem;
+			}
+			.back i{
+			    font-size: 3rem;
+			    color: #00a0ff;
+			    margin: 0 1rem;
+			}
+			.back p {
+			    font-size: 2rem;
+			    color: #00a0ff;
+			}
+			.run .card .run_list{
+			    margin: 0 1rem ;
+			    border-bottom: .1rem grey solid;
+			}
+			.run .col-50 .h3{
+			    font-weight: 500;
+			}
+			.run .col-50{
+			    height: 9rem;
+			    padding-right: 1rem;
+			}
+			.run .col-40.tc{
+			    border-bottom: .1rem grey solid;
+			    height: 9rem;
+			}
+			.run .col-40.tc p{
+			    margin: .5rem 0;
+			    font-size: 1.5rem;
+			}
+			.blue_1{
+			    background-color: #00a0ff;
+			    box-shadow: 0rem 0rem 1rem #18b995;
+			}
+			.blue_2{
+			    background-color: #a6bdd3;;
+			}
+			
+			#bcid {
+			    width: 100%;
+			    position: absolute;
+			    top: 0px;
+			    bottom: 44px;
+			    text-align: center;
+			    background-color: #000000;
+			}
+			.tip {
+			    color: #FFFFFF;
+			    font-weight: bold;
+			    text-shadow: 0px -1px #103E5C;
+			}
+			footer {
+			    width: 100%;
+			    height: 44px;
+			    position: absolute;
+			    bottom: 0px;
+			    line-height: 44px;
+			    text-align: center;
+			    color: #FFF;
+			}
+			.fbt {
+			    width: 100%;
+			    height: 100%;
+			    background-color: #FFCC33;
+			    float: left;
+			}
+			.fbt:active {
+			    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			}
+			.mui-icon.mui-icon-search {
+			    position: absolute;
+			    top: 25px;
+			    right: 100px;
+			    font-size: 20px;
+			}
+			 input[type=text]{
+			 	     margin-bottom:0; 
+			 	     height: 4.9rem;
+			 }
+			
+			img{
+				width: 30px;
+			}
+			
+			.icon {
+			   width: 1em; 
+			   height: 1em;
+			   font-size:3rem;
+			   vertical-align: -0.15em;
+			   fill: currentColor;
+			   overflow: hidden;
+			}
+			 .mui-btn.al {
+			    font-size: 14px;
+			    line-height: 1.42;
+			    padding: 0;
+			    height: 4.9rem;
+			    width: 4.9rem;
+			}
+			/*.mui-scroll {
+			    top: 44px;
+			    height: 800px;
+			     z-index: 3; 
+			    width: 100%;
+			    -webkit-transform: translateZ(0);
+			    transform: translateZ(0);
+			}*/
+			.mui-scroll-wrapper {
+			    z-index: 2;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    overflow: hidden;
+			    width: 100%;
+			}
+			.mui-card{
+				z-index: 5!important;
+			}
+			.input{
+				padding:10px 10px 0 10px;
+				background: #efeff4;
+				position: relative;
+				z-index: 12;
+			}
+			.mui-btn.mui-pull-right{
+				top: 5px;
+			}
+		</style>
+		<link rel="stylesheet" href="../css/index.css" />
+	</head>
+
+	<body>
+		<!--导航-->
+		<header  id="header" class="mui-bar mui-bar-nav">
+		      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">医废追溯</h1>
+		    <input type="text" class="input_hidden" v-model="input_hidden"  />
+			<button class="mui-btn mui-btn-green mui-pull-right">筛选</button>
+		</header>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<!--头部输入框-->
+				<div class=" input rowf ac be" style="">
+		            <div class="run_top col-80" >
+		            	<input type="text" class="run_input" v-model.trim="input"  placeholder="请输入医废编号">
+		                <i class="mui-icon mui-icon-search"></i>
+		            </div>
+		            <button type="button" class="mui-btn al col-20" >
+						<img src="../images/scan.png" alt="" />
+			        </button>	
+		        </div>
+		        <!--列表项-->
+				<div  style='padding: 10px;' class="mui-card rowf ac be" @click="go($index,$event)" v-for="num in list " v-show="num.rubbishCode.indexOf(input) >-1">
+	                <div>
+	                    <p class="h4 run_1">编号： {{num.rubbishCode}}</p>
+	                    <p class="h4 run_2">病区： {{num.endemicArea.location}}</p>
+	                </div>
+	                <div>
+	                    <p class="tc"><img class="img" :src="'../images/zs'+num.rubbishType.orderIndex+'.png'" alt=""></p>
+	                    <p class="h4 run_3">{{num.rubbishType.name}}</p>
+	                </div>
+	            </div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+						
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						auto:true,
+						style:'circle',
+						callback: pulldownRefresh
+					},
+					up: {
+						// auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			mui.plusReady(function(){
+				var ws=plus.webview.currentWebview();
+				ws.addEventListener('maskClick', function(){
+					
+					if(plus.webview.getWebviewById('Pop_box')!=""&&plus.webview.getWebviewById('Pop_box')!=null){
+						plus.webview.getWebviewById('Pop_box').close();
+					}
+					
+					ws.setStyle({mask:'none'});
+				},false);
+			})
+			
+			var vm = new Vue({
+	               el:'#pullrefresh',
+	                data:{
+	                	list:[],
+	                	people:[],
+	                	input:'',
+	                	arry:[],
+	                	index:'',
+	                	count:0,
+	                	input_hidden:localStorage.getItem('partitionId'),
+	                	count_2:0
+	                	
+	                },
+	                methods:{},
+	                watch:{
+		                	input_hidden:{
+											
+		                		handler:function(){
+													vm.list=[];
+													vm.arry=[];
+													vm.count=0;
+		                			pullupRefresh(vm.input_hidden)		                			
+		                		}
+		                	},		                	
+		            }
+	                
+	       	});
+//	       	进入扫描
+			$('.mui-btn.al').on('tap',function(){
+				mui.openWindow({
+			         url: 'saomiao_4.html', 
+			         id:'saomiao_4.html',
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+			});
+//			进入详情
+			$('.mui-scroll').on('tap','.mui-card',function(e){
+				mui.openWindow({
+			         url: 'tracingC.html', 
+			         id:'tracingC.html',
+			         extras:{	
+	                    code:$(this).find('.run_1').text().split(' ')[1],
+	                    list:vm.arry,
+	                  
+	               },
+			         show:{
+			            aniShow:'slide-in-right',
+			            duration:300
+			          },
+			         waiting:{
+			          autoShow:false
+			         }
+			    });
+				
+			})
+
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+					if(vm.input_hidden==null){
+						vm.input_hidden = localStorage.getItem('code');
+					};	
+					setTimeout(function() {
+						console.log(vm.count)
+						if(vm.input_hidden == localStorage.getItem('code')){
+									mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+												tenantId:tenantId,
+												page:vm.count,
+												partitionId:vm.input_hidden
+									},function(data){
+										console.log(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&tenantId='+tenantId+'&page='+vm.count+'&partitionId='+vm.input_hidden);
+										if(data.data.content){
+											vm.list= vm.list.concat(data.data.content);
+											vm.list.forEach(function(item){
+												vm.arry.push(item.rubbishCode);
+											});
+											if(data.data.content.length<10){
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+											}else{
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+											}
+											vm.count++;
+										}else{
+											mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+										}
+				
+										// console.log(vm.list,vm.arry,'666666666666666');
+									},'json'
+									);
+						}else{
+										console.log(vm.count);
+										mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+													tenantId:tenantId,
+													page:vm.count,
+													endemicAreaId:vm.input_hidden
+										},function(data){
+											console.log(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&tenantId='+tenantId+'&page='+vm.count+'&endemicAreaId='+vm.input_hidden);
+											if(data.data.content){
+												vm.list= vm.list.concat(data.data.content);
+												vm.list.forEach(function(item){
+													vm.arry.push(item.rubbishCode);
+												});
+												console.log()
+												if(data.data.content.length<10){
+													mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+												}else{
+													mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+												}
+												vm.count++;
+											}else{
+												mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+											}
+					
+										},'json'
+										);
+						}
+						
+						
+					}, 1500);
+					
+
+				
+			}
+
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				vm.count = 0;
+				vm.list=[];
+				vm.arry=[];
+				mui('#pullrefresh').pullRefresh().refresh(true);
+				setTimeout(function() {	
+					if(vm.input_hidden==null){
+						vm.input_hidden = localStorage.getItem('code');
+					};
+					if(vm.input_hidden == localStorage.getItem('code')){
+						mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+									tenantId:tenantId,
+									page:vm.count,
+									partitionId:vm.input_hidden,
+									// partitionId
+						},function(data){
+						
+							vm.list= data.data.content;
+							vm.list.forEach(function(item){
+								vm.arry.push(item.rubbishCode);
+							})
+							console.log(vm.list,vm.arry,'666666666666666');
+						},'json'
+						);
+					}else{
+						mui.post(url_all+'/cloud/shyf/api/np/v1/packFlow/queryFlowByCode.smvc?status=0&rows=10&',{	
+									tenantId:tenantId,
+									page:vm.count,
+									endemicAreaId:vm.input_hidden,
+									// partitionId
+						},function(data){
+						
+							vm.list= data.data.content;
+							vm.list.forEach(function(item){
+								vm.arry.push(item.rubbishCode);
+							})
+							console.log(vm.list,vm.arry,'666666666666666');
+						},'json'
+						);
+					}
+					
+					
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					mui.toast("更新了");
+				}, 1500);
+			};
+					//			筛选
+				mui('#header').on('tap','.mui-btn',function(){
+					plus.webview.currentWebview().setStyle({mask:'rgba(0,0,0,0.6)'});
+					mui.openWindow({
+						url:'Pop_box.html',
+	    				id:'Pop_box',
+	    				styles:{
+	      					top:'20%',//新页面顶部位置
+	     				 	bottom:'20%',//新页面底部位置
+	      					width:'80%',//新页面宽度，默认为100%
+	      					left:'10%',
+	      					borderRadius: '20px',
+	      					
+	    				},
+	    				show:{
+	      					aniShow:'zoom-fade-out',//页面显示动画，默认为”slide-in-right“；
+	      					duration:100//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+	    				},
+	    				waiting:{
+	      					autoShow:false,//自动显示等待框，默认为true
+	      				},
+	      				extras:{
+	      					webViewId:'tracing.html'
+	      				}
+					});
+				});
+				window.addEventListener('showData',function(event){
+					plus.webview.currentWebview().setStyle({mask:'none'});					
+					vm.input_hidden=event.detail.id	
+				});
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/index.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav {
+				background-color: #1F79CE;
+				color: white;
+			}
+			.mui-bar .mui-title{
+				color: white;
+			}
+			.mui-bar-nav.mui-bar .mui-icon{
+				color:white;
+			}
+			#container,#imgId,#qrcode{
+				background-color: white;
+				height: 200px;
+				width: 100%;}
+			#qrcode{
+				display: none;
+				}
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+
+	<body>
+		<!-- 顶部导航 -->
+		<header class="mui-bar mui-bar-nav bgc_main head">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打印</h1>
+		</header>
+		<div class="mui-content">
+			<button id="test">打印机连接成功的时候，点击我打印测试</button>
+			
+			<!-- <canvas id="container" style="border:1px solid #d3d3d3;" @click=go()> -->
+				
+		</div>
+		<!-- <div id='qrcode'></div> -->
+		<!-- <img id='imgId' src="" alt="">		 -->
+		<script src="../js/jquery-3.0.0.min.js"></script>
+		<!-- <script src="../js/qrcode.js" type="text/javascript" charset="utf-8"></script> -->
+		<script type="text/javascript" src="http://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/printer.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			(function() {
+				console.log('1');
+				
+				//判断缓存的设备地址
+				mui.plusReady(function() {
+					var vm = new Vue({
+						el:'.mui-content',
+							data:{
+								printerCode:''
+							}
+					});
+					var self = plus.webview.currentWebview();	
+					vm.printerCode = self.printerCode;
+					var savedBleId = localStorage.getItem("bleId");
+					if(savedBleId) {
+						var bleObj = new ConnectPrinter(savedBleId);
+					} else {
+						plus.nativeUI.confirm('打印机为设置，是否前往设置？',function(e){
+							if(e.index===0){
+								mui.openWindow({
+									id:"printer_1.html",
+									url:"printer_1.html"
+								});
+							}
+						});
+					};
+					
+					//测试打印
+					document.getElementById("test").addEventListener("tap",function(){
+						// alert('1')
+						var PrintText = "                  阿里巴巴采购部";
+							PrintText+="\...................";
+							if(bleObj){
+								bleObj.gotoPrint(PrintText);
+							}else{
+								bleObj = new ConnectPrinter(savedBleId);
+							}
+						
+					});
+					// canvas生				
+								
+				});
+
+				
+
+
+
+				
+				
+				
+				
+			})();
+			
+
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,348 @@
+ <!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/index.css">
+	</head>
+<style>
+	html{
+		font-size: 10px;
+	}
+
+	.mineTop{
+	    margin: 0;
+	    /*padding: 1rem 0;*/
+	    position: relative;
+	    /*background: url("images/bg.png");*/
+	    background: white;
+	    height: 12rem;
+	    background-size: 100% 100%;
+	    width: 100%;
+	    border-bottom: 1px solid #ddd;
+	    /*padding: 2rem;*/
+	}
+	.mineTop .col-40 img{
+	    width: 7rem;
+	    border-radius: 50%;
+	}
+	.mineTop .col-60 h4{
+	    color: white;
+	    margin-top: 1.2rem;
+	    font-weight: 400;
+	}
+	.mine i{
+	    color: #00a0ff;
+	}
+	p.h4{
+		color: black;
+		font-weight: 500;
+	    margin: .7rem 0;
+		
+	}
+	.col.col-60{
+		padding: 1rem 0;
+		position: relative;
+	}
+	#mui-content .header{
+		text-align: center;
+		padding: 1rem 0;
+		font-size: 2rem;
+		color: black;
+		font-weight: 700;
+		background-color: white;
+		margin: 0;
+		border-bottom: 1px #ddd solid;
+	}
+	#mui-content .scan{
+		position: absolute;
+		top: 0rem;
+		right: 1rem;
+		height: 12rem;
+		padding: 0.5rem 0;
+		/*line-height: 12rem;*/
+
+	}
+	.scan img{
+		width: 4rem;
+		display: block;                              
+	}
+	.scan .bag {
+		margin-top:3rem ;
+	}
+	.btn{
+		margin: 1rem;
+	}
+	.mui-checkbox input[type=checkbox], .mui-radio input[type=radio] {
+	    position: absolute;
+	    top: 9px;
+	    /* line-height: 75px; */
+	    right: 20px;
+	    display: inline-block;
+	    width: 25px;
+	    height: 25px;
+	    border: 0;
+	    outline: 0!important;
+	    background-color: transparent;
+	    -webkit-appearance: none;
+	}
+	.mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before {
+	    font-family: Muiicons;
+	    font-size: 25px;
+	    font-weight: 400;
+	    line-height: 1;
+	    text-decoration: none;
+	    color: #aaa;
+	    border-radius: 0;
+	    background: 0 0;
+	    -webkit-font-smoothing: antialiased;
+	}
+	.mui-table-view-cell{
+		padding: 11px 15px 6px 15px;
+	}
+	.mui-table-view-cell img{
+		display: inline-block;
+		width: 21px;
+		height: 21px;
+	}
+	.mui-checkbox label, .mui-radio label{
+		padding-right: 30px;
+	}
+	.btn {
+	    margin: 0; 
+	    position: fixed;
+	    bottom: 0;
+        width: 90%;
+    	margin-left: 5%;
+	}
+	.mui-btn-block{
+		margin-bottom: 0;
+	}
+	.mui-table-view{
+		margin-bottom: 6rem;
+	}
+	.mui-bar-nav{background-color: #1F79CE;}
+	#header .mui-title{color:#fff;text-align: center;}
+	
+
+</style>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">打包</h1>
+		</header>
+		<div id='mui-content' class="mui-content">
+			<!--<p class="header">医废交接</p>-->
+			<div class=" rowf mineTop" >
+	            <div class="col col-40 rowf M ac">
+	                <div>
+	            		<img src="../images/people.png">
+	                	<div class="tc">转运人</div>
+	            	</div>
+	            </div>
+	            <div class="col col-60 ">
+	                <!--<p class="h4">姓名：{{name}}(交接人)</p>-->
+	                <p class="h4 rowf be"><span>姓名：{{name}}</span></p>
+	                <p class="h4">工号：{{Code}}</p>
+	                <p class="h4">科室：{{Room}}</p>
+	            </div>
+	        </div>
+	        <div class=" rowf mineTop" >
+	            <div class="col col-40 rowf M ac">
+	            	<div>
+	            		<img src="../images/people.png">
+	                	<div class="tc">打包人</div>
+	            	</div>
+	                
+	            </div>
+	            <div class="col col-60 ">
+	                <p class="h4" >姓名：<span v-show='transfer_name'>{{message.name}}</span></p>
+	                <p class="h4" >工号：<span v-show='transfer_name'>{{message.code}}</span></p>
+	                <p class="h4" >科室：<span v-show='transfer_name'>{{transfer_name}}</span></p>
+	                <div class="scan">
+	                	<img @click='scan_1'  src="../images/scan_people.jpg" alt="" />
+	                	<img class="bag" @click='scan'  src="../images/scan_bag.jpg" alt="" />
+	                	
+	                </div>
+	            </div>
+	        </div>
+			<ul class="mui-table-view  mui-checkbox ">
+            	<li class=" mui-table-view-cell" v-for="num in today" track-by="$index" >
+            		<input id={{num.id}} value={{num.weight}} name="Checkbox" type="checkbox" checked  class='checkbox'> 
+            			<label for={{num.id}} class='rowf M'> 
+            				<div class="rowf ">
+            					<div class="col-25">
+            			            <img :src="'../images/icon_'+num.typeCode+'.png'" alt="">			
+            					</div>   	
+		                    	<span class="third col-50" >{{num.code|split}}</span>
+		                    	<span class="col-25">{{num.weight.toFixed(2)+'kg'}}</span>
+            				</div>
+		                    
+            			</label> 
+            	</li>
+			</ul>
+			<div class="rowf M "v-show="today.length==0">没有交接信息</div>
+			<div class="rowf M btn">  
+			     <button @click='transfer' type="button" class="mui-btn mui-btn-warning mui-btn-block" disabled='{{message.length==0}}'>
+					提交 
+				</button>
+			</div> 
+
+		</div>
+	</body>
+
+</html>
+<script src="../js/mui.min.js"></script>
+<script src="../js/jquery-3.0.0.min.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../js/index.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	mui.init();
+
+	
+	var vm = new Vue({
+               el:'#mui-content',
+                data:{
+                	list:[],
+                	codeId:'',
+                	today:[],
+                	isShow:false,
+                	name:'',
+                	Code:'',
+                	Room:'',
+                	message:[],
+                	weight:'',
+                	idSet:[],
+                	personId:'',
+                	transfer_name:''
+                	
+                	
+                },
+                methods:{
+                	run:function(){
+						this.name = localStorage.getItem('loginName');
+						this.Code = localStorage.getItem('staffCode');
+						this.Room = localStorage.getItem('starffRoom');
+						this.personId = localStorage.getItem('personId');
+						
+                	},
+                	scan:function(){
+                		mui.openWindow({
+					         url: 'transfer_scan.html', 
+					         id:'transfer_scan.html',
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					         waiting:{
+					          autoShow:false
+					         }
+					    });
+                		
+                	},
+                	scan_1:function(){
+                		mui.openWindow({
+					         url: 'transfer_scan_1.html', 
+					         id:'transfer_scan_1.html',
+					         show:{
+					            aniShow:'slide-in-right',
+					            duration:300
+					          },
+					         waiting:{
+					          autoShow:false
+					         }
+					    });
+                		
+                	},
+                	transfer:function(){
+//              		判断是否有网
+                		if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+						mui.toast("网络异常，请检查网络设置！");
+						 
+						} else {
+						 
+						};
+                		that=this;
+                		that.weight='';
+                		that.idSet=[];
+                		vm.isShow=false;
+                		$('.checkbox').each(function(index,e){
+          			
+                			if($(this).is(':checked')){
+                				  that.weight=Number(that.weight)+Number($(this).val());
+                				  that.idSet.push($(this).attr('id')+'_'+$(this).val()+'_0')
+                			}else{
+                				vm.isShow=true;
+                			};
+                			
+
+                		});
+                		
+//		                		发送后台保存交接信息，生成批次号
+						if(that.weight){
+							if(vm.isShow){
+	                			mui.toast('未交接完');
+	                		}else{
+	                			mui.toast('交接完');
+	                		};
+							$('.mui-btn-block').attr('disabled','true');
+							mui.post(url_all+'/cloud/shyf/api/np/v1/package/saveGatherPacks.smvc?id='+vm.idSet,{
+								sendId:that.message.id,
+								receiveId:that.personId,								
+								weight:that.weight,
+								tenantId:that.message.tenantId  
+								},function(data){
+									mui.toast('交接成功')
+									
+								},'json'
+							);
+							$('.mui-table-view li').empty();
+                			$('.mui-table-view li').css('padding','0');
+						}else{
+							mui.toast('请选择交接的医废');
+						};
+						vm.message = [];
+						vm.transfer_name='';
+						vm.today=[];
+              		
+                	}
+                }
+    });
+    vm.run();
+
+	function scaned(t, r, f){
+		console.log(JSON.parse(r));
+		vm.today=JSON.parse(r);
+		
+	}
+	function scaned_1(t, r, f){
+		vm.message=[];
+		mui.post(url_all+'/cloud/shyf/api/np/v1/staff/queryStaff.smvc?',{
+			code:r,
+			},function(data){
+					vm.message = data.data;
+					if(vm.message.endemicAreaId!='null' && vm.message.endemicAreaId.type =='10'){
+						vm.transfer_name=vm.message.endemicAreaId.name;
+						mui.toast('可以交接');
+					}else{
+						mui.toast('请扫描转运人');
+					};
+					console.log(JSON.stringify(vm.message))
+			},'json'
+		);
+		
+	}
+
+	Vue.filter('split', function(value) {
+	  if (!value) { return ''}
+	  return value.substr(value.length-9)
+	});
+
+
+</script> 
